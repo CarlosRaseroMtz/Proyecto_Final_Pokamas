@@ -46,8 +46,17 @@ public class Items {
 		this.mejoraCombate = penalizacionDefensa;
 	}
 
+	public int getMejoraCombate() {
+		return mejoraCombate;
+	}
+
+	public void setMejoraCombate(int mejoraCombate) {
+		this.mejoraCombate = mejoraCombate;
+	}
+
 	public void usarItem(Jugador atacante, Jugador objetivo) {
 		objetivo.setVida(objetivo.getVida() + this.poder);
 		objetivo.setDefensa(objetivo.getDefensa() + this.mejoraCombate);
 	}
+
 }

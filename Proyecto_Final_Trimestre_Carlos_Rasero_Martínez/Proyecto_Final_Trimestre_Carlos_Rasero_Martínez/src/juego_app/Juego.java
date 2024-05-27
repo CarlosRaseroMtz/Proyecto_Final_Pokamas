@@ -1,9 +1,5 @@
 package juego_app;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
@@ -50,97 +46,111 @@ public class Juego {
 
 			switch (opMenuPrincipal) {
 			case 1:
-				do {
-					System.out.println(LIGHT_YELLOW
-							+ "-----------------------------------------------------------------------------------"
-							+ RESET);
-					System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET
-							+ LIGHT_YELLOW + "| <---------------------------------------" + RESET);
-					System.out.println("1. MODO HISTORIA");
-					System.out.println("2. COMBATE RÁPIDO");
-					System.out.println("3. VOLVER ATRÁS");
-					System.out.println(LIGHT_YELLOW
-							+ "-----------------------------------------------------------------------------------"
-							+ RESET);
-					opMenuJuego = sc.nextInt();
+//				do {
+				System.out.println(LIGHT_YELLOW
+						+ "-----------------------------------------------------------------------------------"
+						+ RESET);
+				System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET
+						+ LIGHT_YELLOW + "| <---------------------------------------" + RESET);
+				System.out.println("1. MODO HISTORIA");
+				System.out.println("2. COMBATE RÁPIDO");
+				System.out.println("3. VOLVER ATRÁS");
+				System.out.println(LIGHT_YELLOW
+						+ "-----------------------------------------------------------------------------------"
+						+ RESET);
+				opMenuJuego = sc.nextInt();
 
-					switch (opMenuJuego) {
+				switch (opMenuJuego) {
+				case 1:
+					opMenuJuego = 0;
+					System.out.println("Comienza la aventura...");
+					System.out.println("Por favor elija que camino desea escoger...");
+					System.out.println("1. Profesor: Son poseedores del conocimiento y la experiencia");
+					System.out.println("2. Alumno: Maestros del sigilo y sacar el curso");
+					System.out.println("3. Padre: Destacan por su fuerza y su paciencia");
+					int op = sc.nextInt();
+
+					switch (op) {
 					case 1:
-						opMenuJuego = 0;
-						System.out.println("Comienza la aventura...");
-						System.out.println("Por favor elija que camino desea escoger...");
-						System.out.println("1. Profesor: Son poseedores del conocimiento y la experiencia");
-						System.out.println("2. Alumno: Maestros del sigilo y sacar el curso");
-						System.out.println("3. Padre: Destacan por su fuerza y su paciencia");
-						int op = sc.nextInt();
+						op = 0;
+						sc = new Scanner(System.in);
+						System.out.println();
+						System.out.println();
+						System.out.println("¡Bienvenido a la aventura de ser un Profesor!");
+						System.out.println();
+						System.out.println(
+								"Estás caminando por la sala de profesores y ves a lo lejos a Javi, que quiere preguntarte una duda.");
+						System.out.println("¿Cierras la puerta y haces como que no le has visto? (" + CYAN
+								+ "1 para no ayudar" + RESET + "/" + RED + "2 para ayudar" + RESET + ")");
+						int decisionPr = sc.nextInt();
 
-						switch (op) {
-						case 1:
-							op = 0;
-							sc = new Scanner(System.in);
-							System.out.println();
-							System.out.println();
-							System.out.println("¡Bienvenido a la aventura de ser un Profesor!");
-							System.out.println();
-							System.out.println(
-									"Estás caminando por la sala de profesores y ves a lo lejos a Javi, que quiere preguntarte una duda.");
-							System.out.println("¿Cierras la puerta y haces como que no le has visto? (" + CYAN
-									+ "1 para no ayudar" + RESET + "/" + RED + "2 para ayudar" + RESET + ")");
-							int decisionPr = sc.nextInt();
-
-							if (decisionPr == 1) {
-								caminoIzquierdaPr();
-								jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(2));
-								jugadoresDisponibles.clear();
-							} else if (decisionPr == 2) {
-								caminoDerechaPr();
-								jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(6));
-							} else {
-								System.out.println("Por favor, ingresa una respuesta válida (1/2).");
-							}
-							break;
-						case 2:
-							System.out.println();
-							System.out.println();
-							System.out.println("¡Bienvenido a la aventura de ser un Alumno!");
-							System.out.println();
-							System.out.println(
-									"Estás entrando por la puerta del instituto y te da por saltarte la puerta, y de pronto ves entrando al jefe de estudio con el coche.");
-							System.out.println(
-									"¿Corres a clase y dices que tienes un examen? (" + CYAN + "1 Salir corriendo"
-											+ RESET + "/" + RED + "2 Asumir las consecuencias" + RESET + ")");
-							int decisionAl = sc.nextInt();
-
-							if (decisionAl == 1) {
-								caminoIzquierdaAl();
-								jugarCombate(jugadoresDisponibles.get(6), jugadoresDisponibles.get(1));
-							} else if (decisionAl == 2) {
-								caminoDerechaAl();
-								jugarCombate(jugadoresDisponibles.get(6), jugadoresDisponibles.get(25));
-							} else {
-								System.out.println("Por favor, ingresa una respuesta válida (1/2).");
-							}
-
-							break;
-						case 3:
-							System.out.println("Próximamente como DLC");
-						default:
-							System.out.println("Opción no válida");
-							break;
+						if (decisionPr == 1) {
+							caminoIzquierdaPr();
+							jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(2));
+							jugadoresDisponibles.clear();
+							jugadoresDisponibles = cargarJugadores();
+						} else if (decisionPr == 2) {
+							caminoDerechaPr();
+							jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(6));
+							jugadoresDisponibles.clear();
+							jugadoresDisponibles = cargarJugadores();
+						} else {
+							System.out.println("Por favor, ingresa una respuesta válida (1/2).");
 						}
 						break;
 					case 2:
-						jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(5));
+						System.out.println();
+						System.out.println();
+						System.out.println("¡Bienvenido a la aventura de ser un Alumno!");
+						System.out.println();
+						System.out.println(
+								"Estás entrando por la puerta del instituto y te da por saltarte la puerta, y de pronto ves entrando al jefe de estudio con el coche.");
+						System.out.println("¿Corres a clase y dices que tienes un examen? (" + CYAN
+								+ "1 Salir corriendo" + RESET + "/" + RED + "2 Asumir las consecuencias" + RESET + ")");
+						int decisionAl = sc.nextInt();
+
+						if (decisionAl == 1) {
+							caminoIzquierdaAl();
+							jugarCombate(jugadoresDisponibles.get(6), jugadoresDisponibles.get(1));
+							jugadoresDisponibles.clear();
+							jugadoresDisponibles = cargarJugadores();
+							cargarJugadores();
+						} else if (decisionAl == 2) {
+							caminoDerechaAl();
+							jugarCombate(jugadoresDisponibles.get(6), jugadoresDisponibles.get(25));
+							jugadoresDisponibles.clear();
+							jugadoresDisponibles = cargarJugadores();
+							cargarJugadores();
+						} else {
+							System.out.println("Por favor, ingresa una respuesta válida (1/2).");
+						}
+
 						break;
 					case 3:
-						System.out.println("Volviendo atrás");
-						break;
-
+						System.out.println("Próximamente como DLC");
 					default:
 						System.out.println("Opción no válida");
 						break;
 					}
-				} while (opMenuJuego != 3);
+					break;
+				case 2:
+					// Obtener dos índices aleatorios entre 1 y 20
+					Random random = new Random();
+					int indice1 = random.nextInt(20) + 1; // El +1 ajusta el rango para que vaya desde 1 hasta 20
+					int indice2 = random.nextInt(20) + 1;
+					jugarCombate(jugadoresDisponibles.get(indice1), jugadoresDisponibles.get(indice2));
+					jugadoresDisponibles.clear();
+					jugadoresDisponibles = cargarJugadores();
+					break;
+				case 3:
+					System.out.println("Volviendo atrás");
+					break;
+
+				default:
+					System.out.println("Opción no válida");
+					break;
+				}
+//				} while (opMenuJuego != 3);
 
 				break;
 
@@ -165,10 +175,10 @@ public class Juego {
 					bd.agregarJugador();
 					break;
 				case 2:
-					modificarJugador(jugadoresDisponibles);
+					bd.modificarJugador();
 					break;
 				case 3:
-					eliminarJugador(jugadoresDisponibles);
+					bd.eliminarJugador();
 					break;
 				case 4:
 					filtrarYImprimirJugadoresPorTipo(jugadoresDisponibles, Profesor.class);
@@ -240,6 +250,10 @@ public class Juego {
 		sc.close();
 	}
 
+//////////////////////////////////////////////////////////
+////////      METODOS ESTATICOS COMUNES    //////////////
+////////////////////////////////////////////////////////
+
 	private static ArrayList<Jugador> cargarJugadores() {
 		ArrayList<Jugador> jugadoresDisponibles = new ArrayList<>();
 		// Profesores ya predefinidos
@@ -251,35 +265,32 @@ public class Juego {
 		jugadoresDisponibles.add(new Profesor(6, "laDeFol", 120, 25, 35, "Fol"));
 
 		// Alumnos ya predefinidos
-		jugadoresDisponibles.add(new Alumno(1, "Carlos MañanaDejoDeFumar", 140, 40, 40, "1 DAM"));
-		jugadoresDisponibles.add(new Alumno(2, "Ale Machaca", 50, 100, 30, "1 DAM"));
+		jugadoresDisponibles.add(new Alumno(7, "Carlos MañanaDejoDeFumar", 140, 40, 40, "1 DAM"));
+		jugadoresDisponibles.add(new Alumno(8, "Ale Machaca", 50, 100, 30, "1 DAM"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Ricardo NoFaltes"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Pedro Tengo2Asignaturas"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Manuel bajo o vape"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Manuel alto o cigarro"));
+		jugadoresDisponibles.add(agregarJugadorAleatorio("Manuel Vapesito"));
+		jugadoresDisponibles.add(agregarJugadorAleatorio("Manuel Cigarrito"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Javi Preguntas"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Ruben Responsable"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Jimmie Teclado"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Jaime Calmado"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Pablo AhoraFumaMenos"));
+		jugadoresDisponibles.add(agregarJugadorAleatorio("Pablo Tranquilito"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Hugo Sobrao'"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Maria Delegada en Funciones"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Caido en combate Pablo"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Legendario Francisco Vallas"));
 		jugadoresDisponibles.add(agregarJugadorAleatorio("Un tal Alberto"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("La chica del fondo a la izquierda que se fue"));
+		jugadoresDisponibles.add(agregarJugadorAleatorio("Una tal Lourdes"));
 
 		// Padres ya predefinidos
-		jugadoresDisponibles.add(new Padre(1, "Isabel", 111, 22, 33, "madre"));
-		jugadoresDisponibles.add(new Padre(1, "Jose Luis", 111, 22, 33, "padre"));
-		jugadoresDisponibles.add(new Padre(1, "Maricarmen", 111, 22, 33, "madre"));
-		jugadoresDisponibles.add(new Padre(1, "Francisco", 111, 22, 33, "padre"));
+		jugadoresDisponibles.add(new Padre(9, "Isabel", 111, 22, 33, "madre"));
+		jugadoresDisponibles.add(new Padre(10, "Jose Luis", 111, 22, 33, "padre"));
+		jugadoresDisponibles.add(new Padre(11, "Maricarmen", 111, 22, 33, "madre"));
+		jugadoresDisponibles.add(new Padre(12, "Francisco", 111, 22, 33, "padre"));
+
 		return jugadoresDisponibles;
 	}
-
-//////////////////////////////////////////////////////////
-////////      METODOS ESTATICOS COMUNES    //////////////
-////////////////////////////////////////////////////////
 
 	public static void imprimirListas(ArrayList<Jugador> jugadoresDisponibles) {
 		System.out.println("Personajes disponibles:");
@@ -297,135 +308,6 @@ public class Juego {
 		int defAleatoria = generarNumeroAleatorio(25, 35);
 
 		return new Alumno(idAleatoria, nombre, vidaAleatoria, atqAleatoria, defAleatoria, "1 DAM");
-	}
-
-	// Método para agregar un jugador a la base de datos
-	public static void agregarJugador(ArrayList<Jugador> jugadoresDisponibles) {
-		@SuppressWarnings("resource")
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Diga el nombre del Jugador");
-		String nombreEscrito = sc.nextLine();
-		System.out.println("Diga la vida del Jugador");
-		int vidaEscrito = sc.nextInt();
-		System.out.println("Diga el ataque del Jugador");
-		int atqEscrito = sc.nextInt();
-		System.out.println("Diga la defensa del Jugador");
-		int defEscrito = sc.nextInt();
-		System.out.println("Que rol desea tomar:");
-		System.out.println("1. Alumno");
-		System.out.println("2. Profesor");
-		System.out.println("3. Padre");
-		int op = sc.nextInt();
-
-		// Conectar a la base de datos
-		try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Juego", "usuario",
-				"contraseña")) {
-			String query = "";
-			if (op == 1) {
-				query = "INSERT INTO Alumno (nombre, vida, ataque, defensa, curso) VALUES (?, ?, ?, ?, ?)";
-			} else if (op == 2) {
-				query = "INSERT INTO Profesor (nombre, vida, ataque, defensa, asignatura) VALUES (?, ?, ?, ?, ?)";
-			} else if (op == 3) {
-				query = "INSERT INTO Padre (nombre, vida, ataque, defensa, sexo) VALUES (?, ?, ?, ?, ?)";
-			} else {
-				System.out.println("Opción inválida");
-				return;
-			}
-
-			// Preparar la declaración SQL
-			try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-				pstmt.setString(1, nombreEscrito);
-				pstmt.setInt(2, vidaEscrito);
-				pstmt.setInt(3, atqEscrito);
-				pstmt.setInt(4, defEscrito);
-				if (op == 1 || op == 2) {
-					System.out.println("Ingrese el curso/asignatura:");
-					sc.nextLine(); // Consumir la nueva línea
-					String cursoAsignatura = sc.nextLine();
-					pstmt.setString(5, cursoAsignatura);
-				} else {
-					System.out.println("Ingrese el sexo:");
-					sc.nextLine(); // Consumir la nueva línea
-					String sexo = sc.nextLine();
-					pstmt.setString(5, sexo);
-				}
-
-				// Ejecutar la consulta
-				pstmt.executeUpdate();
-				System.out.println("Jugador agregado correctamente a la base de datos.");
-			} catch (SQLException e) {
-				System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de conexión a la base de datos: " + e.getMessage());
-		}
-	}
-
-	// Método para modificar un jugador en la base de datos
-	public static void modificarJugador(ArrayList<Jugador> jugadoresDisponibles) {
-		@SuppressWarnings("resource")
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Ingrese el nombre del jugador a modificar:");
-		String nombre = sc.nextLine();
-
-		// Conectar a la base de datos
-		try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Juego", "usuario",
-				"contraseña")) {
-			String query = "UPDATE Jugador SET vida = ?, ataque = ?, defensa = ? WHERE nombre = ?";
-
-			// Preparar la declaración SQL
-			try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-				// Buscar el jugador en la lista
-				for (Jugador jugador : jugadoresDisponibles) {
-					if (jugador.getNombre().equalsIgnoreCase(nombre)) {
-						// Obtener los nuevos valores
-						System.out.println("Establezca la nueva vida:");
-						int nuevaVida = sc.nextInt();
-						jugador.setVida(nuevaVida);
-
-						System.out.println("Establezca el nuevo ataque:");
-						int nuevoAtaque = sc.nextInt();
-						jugador.setAtaque(nuevoAtaque);
-
-						System.out.println("Establezca la nueva defensa:");
-						int nuevaDefensa = sc.nextInt();
-						jugador.setDefensa(nuevaDefensa);
-
-						// Actualizar los valores en la base de datos
-						pstmt.setInt(1, nuevaVida);
-						pstmt.setInt(2, nuevoAtaque);
-						pstmt.setInt(3, nuevaDefensa);
-						pstmt.setString(4, nombre);
-
-						// Ejecutar la consulta
-						pstmt.executeUpdate();
-						System.out.println("El jugador ha sido modificado correctamente.");
-						return;
-					}
-				}
-				System.out.println("No se encontró ningún jugador con ese nombre.");
-			} catch (SQLException e) {
-				System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de conexión a la base de datos: " + e.getMessage());
-		}
-	}
-
-	public static void eliminarJugador(ArrayList<Jugador> jugadoresDisponibles) {
-		@SuppressWarnings("resource")
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Ingrese el nombre del jugador a eliminar:");
-		String nombre = sc.nextLine();
-
-		for (Jugador jugador : jugadoresDisponibles) {
-			if (jugador.getNombre().equalsIgnoreCase(nombre)) {
-				jugadoresDisponibles.remove(jugador);
-				System.out.println("El jugador ha sido eliminado correctamente.");
-				return;
-			}
-		}
-		System.out.println("No se encontró ningún jugador con ese nombre.");
 	}
 
 	public static int generarNumeroAleatorio(int min, int max) {

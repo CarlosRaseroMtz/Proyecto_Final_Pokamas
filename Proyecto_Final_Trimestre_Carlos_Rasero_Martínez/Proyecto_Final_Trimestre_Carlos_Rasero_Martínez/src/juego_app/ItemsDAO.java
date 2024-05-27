@@ -5,9 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.util.Scanner;
 
-public class HabilidadDAO {
+public class ItemsDAO {
     private Connection conexion;
 
     private final String USUARIO = "root";
@@ -26,17 +25,17 @@ public class HabilidadDAO {
         return con;
     }
 
-    // Método para agregar una habilidad a la base de datos
-    public void agregarHabilidad(Habilidad habilidad) {
+    // Método para agregar un item a la base de datos
+    public void agregarItem(Items item) {
         conexion = conectar();
-        String query = "INSERT INTO Habilidad (nombre, poder, penalizacion_defensa, probabilidad_critico) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Item (id_habilidad, nombre, poder, mejora_combate) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-            pstmt.setString(1, habilidad.getNombre());
-            pstmt.setInt(2, habilidad.getPoder());
-            pstmt.setInt(3, habilidad.getPenalizacionDefensa());
-            pstmt.setDouble(4, habilidad.getProbabilidadCritico());
+            pstmt.setInt(1, item.getIdHabilidad());
+            pstmt.setString(2, item.getNombre());
+            pstmt.setInt(3, item.getPoder());
+            pstmt.setInt(4, item.getMejoraCombate());
             pstmt.executeUpdate();
-            System.out.println("Habilidad agregada correctamente a la base de datos.");
+            System.out.println("Item agregado correctamente a la base de datos.");
         } catch (SQLException e) {
             System.out.println("Error al ejecutar la consulta: " + e.getMessage());
         } finally {
@@ -50,21 +49,20 @@ public class HabilidadDAO {
         }
     }
 
-    // Método para modificar una habilidad en la base de datos
-    public void modificarHabilidad(Habilidad habilidad) {
+    // Método para modificar un item en la base de datos
+    public void modificarItem(Items item) {
         conexion = conectar();
-        String query = "UPDATE Habilidad SET nombre = ?, poder = ?, penalizacion_defensa = ?, probabilidad_critico = ? WHERE id_habilidad = ?";
+        String query = "UPDATE Item SET nombre = ?, poder = ?, mejora_combate = ? WHERE id_habilidad = ?";
         try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-            pstmt.setString(1, habilidad.getNombre());
-            pstmt.setInt(2, habilidad.getPoder());
-            pstmt.setInt(3, habilidad.getPenalizacionDefensa());
-            pstmt.setDouble(4, habilidad.getProbabilidadCritico());
-            pstmt.setInt(5, habilidad.getIdHabilidad());
+            pstmt.setString(1, item.getNombre());
+            pstmt.setInt(2, item.getPoder());
+            pstmt.setInt(3, item.getMejoraCombate());
+            pstmt.setInt(4, item.getIdHabilidad());
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Habilidad modificada correctamente en la base de datos.");
+                System.out.println("Item modificado correctamente en la base de datos.");
             } else {
-                System.out.println("No se encontró ninguna habilidad con el ID proporcionado.");
+                System.out.println("No se encontró ningún item con el ID proporcionado.");
             }
         } catch (SQLException e) {
             System.out.println("Error al ejecutar la consulta: " + e.getMessage());
@@ -79,17 +77,17 @@ public class HabilidadDAO {
         }
     }
 
-    // Método para eliminar una habilidad de la base de datos
-    public void eliminarHabilidad(int idHabilidad) {
+    // Método para eliminar un item de la base de datos
+    public void eliminarItem(int idHabilidad) {
         conexion = conectar();
-        String query = "DELETE FROM Habilidad WHERE id_habilidad = ?";
+        String query = "DELETE FROM Item WHERE id_habilidad = ?";
         try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
             pstmt.setInt(1, idHabilidad);
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Habilidad eliminada correctamente de la base de datos.");
+                System.out.println("Item eliminado correctamente de la base de datos.");
             } else {
-                System.out.println("No se encontró ninguna habilidad con el ID proporcionado.");
+                System.out.println("No se encontró ningún item con el ID proporcionado.");
             }
         } catch (SQLException e) {
             System.out.println("Error al ejecutar la consulta: " + e.getMessage());

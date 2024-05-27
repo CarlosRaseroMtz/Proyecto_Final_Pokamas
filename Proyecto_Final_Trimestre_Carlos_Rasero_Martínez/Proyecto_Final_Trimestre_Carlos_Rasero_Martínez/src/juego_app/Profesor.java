@@ -42,7 +42,7 @@ public class Profesor extends Jugador {
 				.println(nombre + " utiliza la habilidad " + habilidad.getNombre() + " contra " + oponente.getNombre());
 		habilidad.aplicarEfecto(this, oponente);
 		habilidad.aplicarEfectoTipoProfesor(this, oponente);
-		if (probabilidad <= 0.30) {
+		if (probabilidad <= 0.28) {
 			items.usarItem(this, oponente);
 			System.out.println("Además usó: ");
 			System.out.println(nombre + " utiliza el item " + items.getNombre());
