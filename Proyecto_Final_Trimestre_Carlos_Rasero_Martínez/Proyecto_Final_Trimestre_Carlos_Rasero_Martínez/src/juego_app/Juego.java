@@ -19,12 +19,85 @@ public class Juego {
 	public static final String CYAN = "\u001B[36m";
 	public static final String WHITE = "\u001B[37m";
 	public static final String LIGHT_YELLOW = "\u001B[93m";
+	public final static String LIGHT_GREEN = "\u001B[92m";
 
 	public static void main(String[] args) {
 
 		JugadorDAO bd = new JugadorDAO();
+		HabilidadDAO habilidadDAO = new HabilidadDAO();
+	    ItemsDAO itemsDAO = new ItemsDAO();
+	    
 		ArrayList<Jugador> jugadoresDisponibles = cargarJugadores();
+		
+		System.out.println("..........................");
+		System.out.println(".............");
+		System.out.println(".....");
+		System.out.println("INICIANDO");
+		System.out.println("INICIANDO..");
+		System.out.println("INICIANDO.....");
+		System.out.println("...................................");
+		System.out.println("..................");
+		System.out.println("CARGANDO.....");
+		System.out.println("YA CASI ESTAMOS ACABANDO..........");
+		System.out.println("GRACIAS POR TU PACIENCIA");
+		System.out.println("......................");
+		System.out.println("............................");
+		System.out.println("FINALIZANDO...............");
+		System.out.println("FINALIZANDO........");
+		System.out.println("FINALIZANDO........");
+		
+		// INSERTAR HABILIDADES E ITEMS PARA PROFESOR
+		Habilidad[] habilidadesPr = new Habilidad[4];
+		habilidadesPr[0] = new Habilidad(1,
+				GREEN + "Poner Examen Sorpresa: " + RESET + LIGHT_GREEN + "'Nadie lo ve venir'" + RESET, 25, -3, 0.20);
+		habilidadesPr[1] = new Habilidad(2,
+				GREEN + "Enfado: " + RESET + LIGHT_GREEN + "'Con razon por no estudiar'" + RESET, 20, -1, 0.30);
+		habilidadesPr[2] = new Habilidad(3,
+				GREEN + "Usar Moodle: " + RESET + LIGHT_GREEN + "'La usa (pero a nadie le gusta*)'" + RESET, 15, 1,
+				0.50);
+		habilidadesPr[3] = new Habilidad(4, GREEN + "Salvar: " + RESET + LIGHT_GREEN + "'Pasa de un 4 a un 5'" + RESET,
+				20, 3, 0.40);
 
+		for (Habilidad habilidad : habilidadesPr) {
+			habilidadDAO.insertarHabilidad(habilidad);
+		}
+		itemsDAO.insertarItemsPr();
+		
+		// INSERTAR HABILIDADES E ITEMS PARA PADRE
+		Habilidad[] habilidadesPa = new Habilidad[4];
+		habilidadesPa[0] = new Habilidad(1,
+				GREEN + "Elocuencia: " + RESET + LIGHT_GREEN + "'Se lo camela básicamente'" + RESET, 20, 0, 0.20);
+		habilidadesPa[1] = new Habilidad(2,
+				GREEN + "Indignacion: " + RESET + LIGHT_GREEN + "'Se indigna tanto que le dices vale.'" + RESET, 20, 0,
+				0.30);
+		habilidadesPa[2] = new Habilidad(3,
+				GREEN + "Ser Del AMPA: " + RESET + LIGHT_GREEN + "'Prácticamente tiene acciones del colegio'" + RESET,
+				25, 3, 0.60);
+		habilidadesPa[3] = new Habilidad(4, GREEN + "Justificar a mi hijo: " + RESET + LIGHT_GREEN
+				+ "'Mi hijo ese dia estaba malo, lo juro.'" + RESET, 15, -3, 0.30);
+
+		for (Habilidad habilidad : habilidadesPa) {
+			habilidadDAO.insertarHabilidad(habilidad);
+		}
+		itemsDAO.insertarItemsPa();
+		
+		
+		// INSERTAR HABILIDADES E ITEMS PARA ALUMNO
+		Habilidad[] habilidadesAl = new Habilidad[4];
+		habilidadesAl[0] = new Habilidad(1, GREEN+"Mentir: "+RESET+LIGHT_GREEN+"Falló la habilidad*('Se mintió a sí mismo')."+RESET, 10, -10, 0.50); // 40% probabilidad de crítico
+		habilidadesAl[1] = new Habilidad(2, GREEN+"Usar ChatGPT: "+RESET+LIGHT_GREEN+"'Un gran poder conlleva una gran responsabilidad.'"+RESET, 25, -5, 0.20); // 30% probabilidad de crítico
+		habilidadesAl[2] = new Habilidad(3, GREEN+"Estudiar: "+RESET+LIGHT_GREEN+"Esta habilidad siempre acierta al objetivo"+RESET, 25, 20, 0.40); // 65% probabilidad de crítico
+		habilidadesAl[3] = new Habilidad(4, GREEN+"Faltar: "+RESET+LIGHT_GREEN+"'Hoy me quedo en casita.'"+RESET, 20, 3, 0.30); // 20% probabilidad de crítico
+
+		for (Habilidad habilidad : habilidadesAl) {
+			habilidadDAO.insertarHabilidad(habilidad);
+		}
+		itemsDAO.insertarItemsAl();
+		
+		System.out.println("DATOS CARGADOS EXITOSAMENTE");
+		System.out.println("GEIM FRIK ESTUDIOS PRESENTA");
+		System.out.println("-->POKAMAS<--");
+		
 		Scanner sc = new Scanner(System.in);
 		int opMenuPrincipal = 0;
 		int opMenuJuego = 0;
@@ -86,7 +159,7 @@ public class Juego {
 
 						if (decisionPr == 1) {
 							caminoIzquierdaPr();
-							jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(2));
+							jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(3));
 							jugadoresDisponibles.clear();
 							jugadoresDisponibles = cargarJugadores();
 						} else if (decisionPr == 2) {
@@ -104,7 +177,7 @@ public class Juego {
 						System.out.println("¡Bienvenido a la aventura de ser un Alumno!");
 						System.out.println();
 						System.out.println(
-								"Estás entrando por la puerta del instituto y te da por saltarte la puerta, y de pronto ves entrando al jefe de estudio con el coche.");
+								"Estás entrando por la puerta del instituto y te da por saltarte la valla, y de pronto ves entrando al jefe de estudio con el coche.");
 						System.out.println("¿Corres a clase y dices que tienes un examen? (" + CYAN
 								+ "1 Salir corriendo" + RESET + "/" + RED + "2 Asumir las consecuencias" + RESET + ")");
 						int decisionAl = sc.nextInt();
@@ -202,8 +275,9 @@ public class Juego {
 				System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET
 						+ LIGHT_YELLOW + "| <---------------------------------------" + RESET);
 				System.out.println("1. ACTIVAR DALTONISMO");
-				System.out.println("2. DESACTIVAR DALTONISMO");
-				System.out.println("3. VOLVER ATRÁS");
+				System.out.println("2. ACTIVAR DALTONISMO V2");
+				System.out.println("3. DESACTIVAR DALTONISMO");
+				System.out.println("4. VOLVER ATRÁS");
 				System.out.println(LIGHT_YELLOW
 						+ "-----------------------------------------------------------------------------------"
 						+ RESET);
@@ -212,12 +286,15 @@ public class Juego {
 
 				switch (opMenuAjustes) {
 				case 1:
-
+					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.PURPLE_BACKGROUND_BRIGHT));
 					break;
 				case 2:
-
+					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.BLUE_BOLD));
 					break;
 				case 3:
+					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.RESET));
+					break;
+				case 4:
 					System.out.println("Volviendo atrás");
 					break;
 

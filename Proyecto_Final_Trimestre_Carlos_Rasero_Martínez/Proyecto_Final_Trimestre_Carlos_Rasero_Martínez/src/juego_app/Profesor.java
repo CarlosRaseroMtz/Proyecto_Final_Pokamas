@@ -55,20 +55,14 @@ public class Profesor extends Jugador {
 		final String GREEN = "\u001B[32m";
 		final String LIGHT_GREEN = "\u001B[92m";
 		habilidades[0] = new Habilidad(1,
-				GREEN + "Poner Examen Sorpresa: " + RESET + LIGHT_GREEN + "'Nadie lo ve venir'" + RESET, 25, -3, 0.20); // 20%
-																														// probabilidad
-																														// de
-																														// crítico
+				GREEN + "Poner Examen Sorpresa: " + RESET + LIGHT_GREEN + "'Nadie lo ve venir'" + RESET, 25, -3, 0.20);
 		habilidades[1] = new Habilidad(2,
-				GREEN + "Enfado: " + RESET + LIGHT_GREEN + "'Con razon por no estudiar'" + RESET, 20, -1, 0.30); // 50%
-																													// probabilidad
-																													// de
-																													// crítico
+				GREEN + "Enfado: " + RESET + LIGHT_GREEN + "'Con razon por no estudiar'" + RESET, 20, -1, 0.30);
 		habilidades[2] = new Habilidad(3,
 				GREEN + "Usar Moodle: " + RESET + LIGHT_GREEN + "'La usa (pero a nadie le gusta*)'" + RESET, 15, 1,
-				0.50); // 70% probabilidad de crítico
+				0.50);
 		habilidades[3] = new Habilidad(4, GREEN + "Salvar: " + RESET + LIGHT_GREEN + "'Pasa de un 4 a un 5'" + RESET,
-				20, 3, 0.40); // 30% probabilidad de crítico
+				20, 3, 0.40);
 	}
 
 	@Override
@@ -97,9 +91,10 @@ public class Profesor extends Jugador {
 		final String YELLOW = "\u001B[33m";
 		final String LIGHT_YELLOW = "\u001B[93m";
 
-		return ""+YELLOW+"Profesor [ " +RESET+ LIGHT_YELLOW + "nombre=" + RESET + WHITE + nombre + RESET + LIGHT_GREEN + ", vida=" + RESET + WHITE
-				+ vida + RESET + RED + ", ataque=" + RESET + WHITE + ataque + RESET + CYAN + ", defensa=" + RESET
-				+ WHITE + defensa + RESET + PINK + ", asignatura=" + RESET + WHITE + asignatura + RESET + " ]";
+		return "" + YELLOW + "Profesor [ " + RESET + LIGHT_YELLOW + "nombre=" + RESET + WHITE + nombre + RESET
+				+ LIGHT_GREEN + ", vida=" + RESET + WHITE + vida + RESET + RED + ", ataque=" + RESET + WHITE + ataque
+				+ RESET + CYAN + ", defensa=" + RESET + WHITE + defensa + RESET + PINK + ", asignatura=" + RESET + WHITE
+				+ asignatura + RESET + " ]";
 	}
 
 }

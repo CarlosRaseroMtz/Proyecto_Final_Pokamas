@@ -2,24 +2,30 @@ package juego_app;
 
 public class Items {
 
-	private int idHabilidad;
+	private int idItem;
 	private String nombre;
 	private int poder;
 	private int mejoraCombate;
 
-	public Items(int idHabilidad, String nombre, int poder, int mejoraCombate) {
-		this.idHabilidad = idHabilidad;
+	public Items(int idItem, String nombre, int poder, int mejoraCombate) {
+		this.idItem = idItem;
 		this.nombre = nombre;
 		this.poder = poder;
 		this.mejoraCombate = mejoraCombate;
 	}
 
-	public int getIdHabilidad() {
-		return idHabilidad;
+	public Items(String nombre, int poder, int mejoraCombate) {
+		this.nombre = nombre;
+		this.poder = poder;
+		this.mejoraCombate = mejoraCombate;
 	}
 
-	public void setIdHabilidad(int idHabilidad) {
-		this.idHabilidad = idHabilidad;
+	public int getIdItem() {
+		return idItem;
+	}
+
+	public void setIdItem(int idItem) {
+		this.idItem = idItem;
 	}
 
 	public String getNombre() {

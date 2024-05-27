@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.util.Scanner;
 
 public class HabilidadDAO {
     private Connection conexion;
@@ -93,6 +91,32 @@ public class HabilidadDAO {
             }
         } catch (SQLException e) {
             System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+        } finally {
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+    }
+
+    // Método para insertar una habilidad en la base de datos
+    public void insertarHabilidad(Habilidad habilidad) {
+        conexion = conectar();
+        String query = "INSERT INTO Habilidad (nombre, poder, penalizacion_def, probabilidad_crit) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
+            pstmt.setString(1, habilidad.getNombre());
+            pstmt.setInt(2, habilidad.getPoder());
+            pstmt.setInt(3, habilidad.getPenalizacionDefensa());
+            pstmt.setDouble(4, habilidad.getProbabilidadCritico());
+
+            pstmt.executeUpdate();
+            System.out.println("Habilidad insertada correctamente en la base de datos.");
+        } catch (SQLException e) {
+            System.out.println("Error al insertar la habilidad: " + e.getMessage());
         } finally {
             try {
                 if (conexion != null) {
