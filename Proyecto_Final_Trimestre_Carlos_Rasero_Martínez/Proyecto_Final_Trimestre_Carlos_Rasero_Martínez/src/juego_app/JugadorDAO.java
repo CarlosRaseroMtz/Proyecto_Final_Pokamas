@@ -87,7 +87,7 @@ public class JugadorDAO {
 				if (conexion != null) {
 					conexion.close();
 				}
-				sc.close();
+//				sc.close();
 			} catch (SQLException e) {
 				System.out.println("Error al cerrar la conexión: " + e.getMessage());
 			}
@@ -97,6 +97,7 @@ public class JugadorDAO {
 	private void crearAlumno(long generatedId) throws SQLException {
 		System.out.println("Diga el curso del Alumno");
 		String curso = sc.nextLine();
+		System.out.println("Agregado correctamente");
 
 		String query = "INSERT INTO Alumno (id_jugador, curso) VALUES (?, ?)";
 		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
@@ -109,6 +110,7 @@ public class JugadorDAO {
 	private void crearProfesor(long generatedId) throws SQLException {
 		System.out.println("Diga la asignatura del Profesor");
 		String asig = sc.nextLine();
+		System.out.println("Agregado correctamente");
 
 		String query = "INSERT INTO Profesor (id_jugador, asignatura) VALUES (?, ?)";
 		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
@@ -121,6 +123,7 @@ public class JugadorDAO {
 	private void crearPadre(long generatedId) throws SQLException {
 		System.out.println("Diga el sexo del Padre");
 		String sexo = sc.nextLine();
+		System.out.println("Agregado correctamente");
 
 		String query = "INSERT INTO Padre (id_jugador, sexo) VALUES (?, ?)";
 		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
@@ -147,7 +150,7 @@ public class JugadorDAO {
 		int defEscrito = sc.nextInt();
 		sc.nextLine();
 
-		String query = "UPDATE Jugador SET nombre = ?, vida = ?, ataque = ?, defensa = ? WHERE id = ?";
+		String query = "UPDATE Jugador SET nombre = ?, vida = ?, ataque = ?, defensa = ? WHERE id_jugador = ?";
 
 		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
 			pstmt.setString(1, nombreEscrito);
@@ -201,6 +204,7 @@ public class JugadorDAO {
 	private void modificarAlumno(long idJugador) throws SQLException {
 		System.out.println("Diga el nuevo curso del Alumno");
 		String curso = sc.nextLine();
+		System.out.println("Modificado correctamente");
 
 		String query = "UPDATE Alumno SET curso = ? WHERE id_jugador = ?";
 		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
@@ -213,6 +217,7 @@ public class JugadorDAO {
 	private void modificarProfesor(long idJugador) throws SQLException {
 		System.out.println("Diga la nueva asignatura del Profesor");
 		String asig = sc.nextLine();
+		System.out.println("Modificado correctamente");
 
 		String query = "UPDATE Profesor SET asignatura = ? WHERE id_jugador = ?";
 		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
@@ -225,6 +230,7 @@ public class JugadorDAO {
 	private void modificarPadre(long idJugador) throws SQLException {
 		System.out.println("Diga el nuevo sexo del Padre");
 		String sexo = sc.nextLine();
+		System.out.println("Modificado correctamente");
 
 		String query = "UPDATE Padre SET sexo = ? WHERE id_jugador = ?";
 		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
@@ -241,7 +247,7 @@ public class JugadorDAO {
 		long idJugador = sc.nextLong();
 		sc.nextLine(); // Consumir la nueva línea
 
-		String deleteJugadorQuery = "DELETE FROM Jugador WHERE id = ?";
+		String deleteJugadorQuery = "DELETE FROM Jugador WHERE id_jugador = ?";
 		String deleteAlumnoQuery = "DELETE FROM Alumno WHERE id_jugador = ?";
 		String deleteProfesorQuery = "DELETE FROM Profesor WHERE id_jugador = ?";
 		String deletePadreQuery = "DELETE FROM Padre WHERE id_jugador = ?";
