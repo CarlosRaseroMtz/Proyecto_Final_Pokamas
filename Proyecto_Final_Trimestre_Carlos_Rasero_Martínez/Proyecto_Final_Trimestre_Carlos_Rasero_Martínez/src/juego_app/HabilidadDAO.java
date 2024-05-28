@@ -9,25 +9,25 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class HabilidadDAO {
-    private Connection conexion;
+	private Connection conexion;
 
-    private final String USUARIO = "root";
-    private final String PASSWORD = "1111";
-    private final String MAQUINA = "localhost";
-    private final String BD = "juego";
-    
-    private final Scanner sc = new Scanner(System.in);
+	private final String USUARIO = "root";
+	private final String PASSWORD = "1111";
+	private final String MAQUINA = "localhost";
+	private final String BD = "juego";
 
-    private Connection conectar() {
-        Connection con = null;
-        String url = "jdbc:mysql://" + MAQUINA + "/" + BD;
-        try {
-            con = DriverManager.getConnection(url, USUARIO, PASSWORD);
-        } catch (SQLException e) {
-            System.out.println("Error al conectar al SGBD: " + e.getMessage());
-        }
-        return con;
-    }
+	private final Scanner sc = new Scanner(System.in);
+
+	private Connection conectar() {
+		Connection con = null;
+		String url = "jdbc:mysql://" + MAQUINA + "/" + BD;
+		try {
+			con = DriverManager.getConnection(url, USUARIO, PASSWORD);
+		} catch (SQLException e) {
+			System.out.println("Error al conectar al SGBD: " + e.getMessage());
+		}
+		return con;
+	}
 
 	public void agregarHabilidad() {
 		conexion = conectar();
@@ -67,13 +67,12 @@ public class HabilidadDAO {
 				if (conexion != null) {
 					conexion.close();
 				}
-//				sc.close();
 			} catch (SQLException e) {
 				System.out.println("Error al cerrar la conexión: " + e.getMessage());
 			}
 		}
 	}
-	
+
 	public void modificarHabilidad() {
 		conexion = conectar();
 
@@ -120,175 +119,94 @@ public class HabilidadDAO {
 			}
 		}
 	}
-    
-//    // Método para agregar una habilidad a la base de datos
-//    public void agregarHabilidad(Habilidad habilidad) {
-//        conexion = conectar();
-//        String query = "INSERT INTO Habilidad (nombre, poder, penalizacion_defensa, probabilidad_critico) VALUES (?, ?, ?, ?)";
-//        try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-//            pstmt.setString(1, habilidad.getNombre());
-//            pstmt.setInt(2, habilidad.getPoder());
-//            pstmt.setInt(3, habilidad.getPenalizacionDefensa());
-//            pstmt.setDouble(4, habilidad.getProbabilidadCritico());
-//            pstmt.executeUpdate();
-//            System.out.println("Habilidad agregada correctamente a la base de datos.");
-//        } catch (SQLException e) {
-//            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-//        } finally {
-//            try {
-//                if (conexion != null) {
-//                    conexion.close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("Error al cerrar la conexión: " + e.getMessage());
-//            }
-//        }
-//    }
 
-//    // Método para modificar una habilidad en la base de datos
-//    public void modificarHabilidad(Habilidad habilidad) {
-//        conexion = conectar();
-//        String query = "UPDATE Habilidad SET nombre = ?, poder = ?, penalizacion_defensa = ?, probabilidad_critico = ? WHERE id_habilidad = ?";
-//        try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-//            pstmt.setString(1, habilidad.getNombre());
-//            pstmt.setInt(2, habilidad.getPoder());
-//            pstmt.setInt(3, habilidad.getPenalizacionDefensa());
-//            pstmt.setDouble(4, habilidad.getProbabilidadCritico());
-//            pstmt.setInt(5, habilidad.getIdHabilidad());
-//            int rowsAffected = pstmt.executeUpdate();
-//            if (rowsAffected > 0) {
-//                System.out.println("Habilidad modificada correctamente en la base de datos.");
-//            } else {
-//                System.out.println("No se encontró ninguna habilidad con el ID proporcionado.");
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-//        } finally {
-//            try {
-//                if (conexion != null) {
-//                    conexion.close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("Error al cerrar la conexión: " + e.getMessage());
-//            }
-//        }
-//    }
-	
 	public void eliminarHabilidad() {
-	    conexion = conectar();
+		conexion = conectar();
 
-	    System.out.println("Diga el ID de la habilidad a eliminar");
-	    int idHabilidad = sc.nextInt();
+		System.out.println("Diga el ID de la habilidad a eliminar");
+		int idHabilidad = sc.nextInt();
 
-	    String query = "DELETE FROM Habilidad WHERE id_habilidad = ?";
+		String query = "DELETE FROM Habilidad WHERE id_habilidad = ?";
 
-	    try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-	        pstmt.setInt(1, idHabilidad);
+		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
+			pstmt.setInt(1, idHabilidad);
 
-	        int rowsDeleted = pstmt.executeUpdate();
-	        if (rowsDeleted > 0) {
-	            System.out.println("Habilidad eliminada correctamente.");
-	        } else {
-	            System.out.println("No se encontró la habilidad con el ID especificado.");
-	        }
+			int rowsDeleted = pstmt.executeUpdate();
+			if (rowsDeleted > 0) {
+				System.out.println("Habilidad eliminada correctamente.");
+			} else {
+				System.out.println("No se encontró la habilidad con el ID especificado.");
+			}
 
-	    } catch (SQLException e) {
-	        System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-	    } finally {
-	        try {
-	            if (conexion != null) {
-	                conexion.close();
-	            }
-	        } catch (SQLException e) {
-	            System.out.println("Error al cerrar la conexión: " + e.getMessage());
-	        }
-	    }
+		} catch (SQLException e) {
+			System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+		} finally {
+			try {
+				if (conexion != null) {
+					conexion.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar la conexión: " + e.getMessage());
+			}
+		}
 	}
-	
+
 	public void mostrarHabilidades() {
-	    conexion = conectar();
-	    
-	    String query = "SELECT id_habilidad, nombre, poder, penalizacion_def, probabilidad_crit FROM Habilidad";
+		conexion = conectar();
 
-	    try (Statement stmt = conexion.createStatement();
-	         ResultSet rs = stmt.executeQuery(query)) {
+		String query = "SELECT id_habilidad, nombre, poder, penalizacion_def, probabilidad_crit FROM Habilidad";
 
-	        System.out.println("ID | Nombre | Poder | Penalización de Defensa | Probabilidad de Crítico");
-	        System.out.println("-----------------------------------------------------------");
+		try (Statement stmt = conexion.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
 
-	        while (rs.next()) {
-	            int id = rs.getInt("id_habilidad");
-	            String nombre = rs.getString("nombre");
-	            int poder = rs.getInt("poder");
-	            int penalizacionDef = rs.getInt("penalizacion_def");
-	            float probabilidadCrit = rs.getFloat("probabilidad_crit");
+			System.out.println("ID | Nombre | Poder | Penalización de Defensa | Probabilidad de Crítico");
+			System.out.println("-----------------------------------------------------------");
 
-	            System.out.println(id + " | " + nombre + " | " + poder + " | " + penalizacionDef + " | " + probabilidadCrit);
-	        }
+			while (rs.next()) {
+				int id = rs.getInt("id_habilidad");
+				String nombre = rs.getString("nombre");
+				int poder = rs.getInt("poder");
+				int penalizacionDef = rs.getInt("penalizacion_def");
+				float probabilidadCrit = rs.getFloat("probabilidad_crit");
 
-	    } catch (SQLException e) {
-	        System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-	    } finally {
-	        try {
-	            if (conexion != null) {
-	                conexion.close();
-	            }
-	        } catch (SQLException e) {
-	            System.out.println("Error al cerrar la conexión: " + e.getMessage());
-	        }
-	    }
+				System.out.println(
+						id + " | " + nombre + " | " + poder + " | " + penalizacionDef + " | " + probabilidadCrit);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+		} finally {
+			try {
+				if (conexion != null) {
+					conexion.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar la conexión: " + e.getMessage());
+			}
+		}
 	}
 
+	public void insertarHabilidad(Habilidad habilidad) {
+		conexion = conectar();
+		String query = "INSERT INTO Habilidad (nombre, poder, penalizacion_def, probabilidad_crit) VALUES (?, ?, ?, ?)";
 
-//
-//    // Método para eliminar una habilidad de la base de datos
-//    public void eliminarHabilidad(int idHabilidad) {
-//        conexion = conectar();
-//        String query = "DELETE FROM Habilidad WHERE id_habilidad = ?";
-//        try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-//            pstmt.setInt(1, idHabilidad);
-//            int rowsAffected = pstmt.executeUpdate();
-//            if (rowsAffected > 0) {
-//                System.out.println("Habilidad eliminada correctamente de la base de datos.");
-//            } else {
-//                System.out.println("No se encontró ninguna habilidad con el ID proporcionado.");
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-//        } finally {
-//            try {
-//                if (conexion != null) {
-//                    conexion.close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("Error al cerrar la conexión: " + e.getMessage());
-//            }
-//        }
-//    }
+		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
+			pstmt.setString(1, habilidad.getNombre());
+			pstmt.setInt(2, habilidad.getPoder());
+			pstmt.setInt(3, habilidad.getPenalizacionDefensa());
+			pstmt.setDouble(4, habilidad.getProbabilidadCritico());
 
-    // Método para insertar una habilidad en la base de datos
-    public void insertarHabilidad(Habilidad habilidad) {
-        conexion = conectar();
-        String query = "INSERT INTO Habilidad (nombre, poder, penalizacion_def, probabilidad_crit) VALUES (?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-            pstmt.setString(1, habilidad.getNombre());
-            pstmt.setInt(2, habilidad.getPoder());
-            pstmt.setInt(3, habilidad.getPenalizacionDefensa());
-            pstmt.setDouble(4, habilidad.getProbabilidadCritico());
-
-            pstmt.executeUpdate();
-            System.out.println("Habilidad insertada correctamente en la base de datos.");
-        } catch (SQLException e) {
-            System.out.println("Error al insertar la habilidad: " + e.getMessage());
-        } finally {
-            try {
-                if (conexion != null) {
-                    conexion.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexión: " + e.getMessage());
-            }
-        }
-    }
+			pstmt.executeUpdate();
+			System.out.println("Habilidad insertada correctamente en la base de datos.");
+		} catch (SQLException e) {
+			System.out.println("Error al insertar la habilidad: " + e.getMessage());
+		} finally {
+			try {
+				if (conexion != null) {
+					conexion.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar la conexión: " + e.getMessage());
+			}
+		}
+	}
 }

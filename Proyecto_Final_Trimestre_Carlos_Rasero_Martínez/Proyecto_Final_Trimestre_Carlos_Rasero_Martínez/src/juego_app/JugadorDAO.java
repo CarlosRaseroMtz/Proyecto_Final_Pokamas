@@ -87,7 +87,6 @@ public class JugadorDAO {
 				if (conexion != null) {
 					conexion.close();
 				}
-//				sc.close();
 			} catch (SQLException e) {
 				System.out.println("Error al cerrar la conexión: " + e.getMessage());
 			}

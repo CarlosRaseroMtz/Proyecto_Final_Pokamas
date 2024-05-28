@@ -64,14 +64,11 @@ public abstract class Jugador {
 	public void setDefensa(int defensa) {
 		this.defensa = defensa;
 	}
-	
-	//Método para inicializar habilidades
+
 	protected abstract void inicializarHabilidades();
-	
-	//Método para inicializar habilidades
+
 	protected abstract void inicializarItems();
 
-    // Método para seleccionar una habilidad aleatoria
     public Habilidad seleccionarHabilidad() {
         Random random = new Random();
         int indice = random.nextInt(habilidades.length);
@@ -86,9 +83,6 @@ public abstract class Jugador {
     
 
 	public void atacar(Jugador oponente) {
-		// TODO Auto-generated method stub
 		
 	}
-
-
 }
