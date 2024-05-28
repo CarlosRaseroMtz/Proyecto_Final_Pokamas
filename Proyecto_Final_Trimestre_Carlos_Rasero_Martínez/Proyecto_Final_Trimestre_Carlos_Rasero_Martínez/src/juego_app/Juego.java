@@ -1,10 +1,13 @@
 package juego_app;
 
 import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class Juego {
 
@@ -21,14 +24,18 @@ public class Juego {
 	public static final String LIGHT_YELLOW = "\u001B[93m";
 	public final static String LIGHT_GREEN = "\u001B[92m";
 
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/juego";
+	private static final String DB_USER = "root";
+	private static final String DB_PASSWORD = "1111";
+
 	public static void main(String[] args) {
 
 		JugadorDAO bd = new JugadorDAO();
 		HabilidadDAO habilidadDAO = new HabilidadDAO();
-	    ItemsDAO itemsDAO = new ItemsDAO();
-	    
+		ItemsDAO itemsDAO = new ItemsDAO();
+
 		ArrayList<Jugador> jugadoresDisponibles = cargarJugadores();
-		
+
 		System.out.println("..........................");
 		System.out.println(".............");
 		System.out.println(".....");
@@ -45,7 +52,7 @@ public class Juego {
 		System.out.println("FINALIZANDO...............");
 		System.out.println("FINALIZANDO........");
 		System.out.println("FINALIZANDO........");
-		
+
 		// INSERTAR HABILIDADES E ITEMS PARA PROFESOR
 		Habilidad[] habilidadesPr = new Habilidad[4];
 		habilidadesPr[0] = new Habilidad(1,
@@ -62,7 +69,7 @@ public class Juego {
 			habilidadDAO.insertarHabilidad(habilidad);
 		}
 		itemsDAO.insertarItemsPr();
-		
+
 		// INSERTAR HABILIDADES E ITEMS PARA PADRE
 		Habilidad[] habilidadesPa = new Habilidad[4];
 		habilidadesPa[0] = new Habilidad(1,
@@ -80,31 +87,42 @@ public class Juego {
 			habilidadDAO.insertarHabilidad(habilidad);
 		}
 		itemsDAO.insertarItemsPa();
-		
-		
+
 		// INSERTAR HABILIDADES E ITEMS PARA ALUMNO
 		Habilidad[] habilidadesAl = new Habilidad[4];
-		habilidadesAl[0] = new Habilidad(1, GREEN+"Mentir: "+RESET+LIGHT_GREEN+"Falló la habilidad*('Se mintió a sí mismo')."+RESET, 10, -10, 0.50); // 40% probabilidad de crítico
-		habilidadesAl[1] = new Habilidad(2, GREEN+"Usar ChatGPT: "+RESET+LIGHT_GREEN+"'Un gran poder conlleva una gran responsabilidad.'"+RESET, 25, -5, 0.20); // 30% probabilidad de crítico
-		habilidadesAl[2] = new Habilidad(3, GREEN+"Estudiar: "+RESET+LIGHT_GREEN+"Esta habilidad siempre acierta al objetivo"+RESET, 25, 20, 0.40); // 65% probabilidad de crítico
-		habilidadesAl[3] = new Habilidad(4, GREEN+"Faltar: "+RESET+LIGHT_GREEN+"'Hoy me quedo en casita.'"+RESET, 20, 3, 0.30); // 20% probabilidad de crítico
+		habilidadesAl[0] = new Habilidad(1,
+				GREEN + "Mentir: " + RESET + LIGHT_GREEN + "Falló la habilidad*('Se mintió a sí mismo')." + RESET, 10,
+				-10, 0.50); // 40% probabilidad de crítico
+		habilidadesAl[1] = new Habilidad(2, GREEN + "Usar ChatGPT: " + RESET + LIGHT_GREEN
+				+ "'Un gran poder conlleva una gran responsabilidad.'" + RESET, 25, -5, 0.20); // 30% probabilidad de
+																								// crítico
+		habilidadesAl[2] = new Habilidad(3,
+				GREEN + "Estudiar: " + RESET + LIGHT_GREEN + "Esta habilidad siempre acierta al objetivo" + RESET, 25,
+				20, 0.40); // 65% probabilidad de crítico
+		habilidadesAl[3] = new Habilidad(4,
+				GREEN + "Faltar: " + RESET + LIGHT_GREEN + "'Hoy me quedo en casita.'" + RESET, 20, 3, 0.30); // 20%
+																												// probabilidad
+																												// de
+																												// crítico
 
 		for (Habilidad habilidad : habilidadesAl) {
 			habilidadDAO.insertarHabilidad(habilidad);
 		}
 		itemsDAO.insertarItemsAl();
-		
+
 		System.out.println("DATOS CARGADOS EXITOSAMENTE");
 		System.out.println("GEIM FRIK ESTUDIOS PRESENTA");
 		System.out.println("-->POKAMAS<--");
-		
+
 		Scanner sc = new Scanner(System.in);
 		int opMenuPrincipal = 0;
 		int opMenuJuego = 0;
 		int opMenuPersonajes = 0;
 		int opMenuAjustes = 0;
+		int opSubPersonajes = 0;
 
 		do {
+			jugadoresDisponibles = cargarJugadores();
 			System.out.println(LIGHT_YELLOW
 					+ "-----------------------------------------------------------------------------------" + RESET);
 			System.out.println(LIGHT_YELLOW + "-----------------------------> |" + YELLOW + " POKAMAS " + RESET
@@ -160,13 +178,9 @@ public class Juego {
 						if (decisionPr == 1) {
 							caminoIzquierdaPr();
 							jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(3));
-							jugadoresDisponibles.clear();
-							jugadoresDisponibles = cargarJugadores();
 						} else if (decisionPr == 2) {
 							caminoDerechaPr();
 							jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(6));
-							jugadoresDisponibles.clear();
-							jugadoresDisponibles = cargarJugadores();
 						} else {
 							System.out.println("Por favor, ingresa una respuesta válida (1/2).");
 						}
@@ -185,15 +199,9 @@ public class Juego {
 						if (decisionAl == 1) {
 							caminoIzquierdaAl();
 							jugarCombate(jugadoresDisponibles.get(6), jugadoresDisponibles.get(1));
-							jugadoresDisponibles.clear();
-							jugadoresDisponibles = cargarJugadores();
-							cargarJugadores();
 						} else if (decisionAl == 2) {
 							caminoDerechaAl();
 							jugarCombate(jugadoresDisponibles.get(6), jugadoresDisponibles.get(25));
-							jugadoresDisponibles.clear();
-							jugadoresDisponibles = cargarJugadores();
-							cargarJugadores();
 						} else {
 							System.out.println("Por favor, ingresa una respuesta válida (1/2).");
 						}
@@ -209,11 +217,9 @@ public class Juego {
 				case 2:
 					// Obtener dos índices aleatorios entre 1 y 20
 					Random random = new Random();
-					int indice1 = random.nextInt(20) + 1; // El +1 ajusta el rango para que vaya desde 1 hasta 20
-					int indice2 = random.nextInt(20) + 1;
+					int indice1 = random.nextInt(jugadoresDisponibles.size()) + 1; // El +1 ajusta el rango para que vaya desde 1 hasta 20
+					int indice2 = random.nextInt(jugadoresDisponibles.size()) + 1;
 					jugarCombate(jugadoresDisponibles.get(indice1), jugadoresDisponibles.get(indice2));
-					jugadoresDisponibles.clear();
-					jugadoresDisponibles = cargarJugadores();
 					break;
 				case 3:
 					System.out.println("Volviendo atrás");
@@ -237,7 +243,8 @@ public class Juego {
 				System.out.println("2. MODIFICAR JUGADOR");
 				System.out.println("3. ELIMINAR JUGADOR");
 				System.out.println("4. MOSTRAR JUGADORES");
-				System.out.println("5. VOLVER ATRÁS");
+				System.out.println("5. ITEMS Y HABILIDADES");
+				System.out.println("6. VOLVER ATRÁS");
 				System.out.println(LIGHT_YELLOW
 						+ "-----------------------------------------------------------------------------------"
 						+ RESET);
@@ -254,11 +261,110 @@ public class Juego {
 					bd.eliminarJugador();
 					break;
 				case 4:
-					filtrarYImprimirJugadoresPorTipo(jugadoresDisponibles, Profesor.class);
-					filtrarYImprimirJugadoresPorTipo(jugadoresDisponibles, Padre.class);
-					filtrarYImprimirJugadoresPorTipo(jugadoresDisponibles, Alumno.class);
+					imprimirProfesores();
+					imprimirAlumnos();
+					imprimirPadres();
 					break;
 				case 5:
+					System.out.println(LIGHT_YELLOW
+							+ "-----------------------------------------------------------------------------------"
+							+ RESET);
+					System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET
+							+ LIGHT_YELLOW + "| <---------------------------------------" + RESET);
+					System.out.println("1. HABLIDADES");
+					System.out.println("2. ITEMS");
+					System.out.println("3. VOLVER ATRÁS");
+					System.out.println(LIGHT_YELLOW
+							+ "-----------------------------------------------------------------------------------"
+							+ RESET);
+					opSubPersonajes = sc.nextInt();
+						switch (opSubPersonajes) {
+						case 1:
+							System.out.println(LIGHT_YELLOW
+									+ "-----------------------------------------------------------------------------------"
+									+ RESET);
+							System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET
+									+ LIGHT_YELLOW + "| <---------------------------------------" + RESET);
+							System.out.println("1. AGREGAR HABILIDAD");
+							System.out.println("2. MODIFICAR HABILIDAD");
+							System.out.println("3. ELIMINAR HABILIDAD");
+							System.out.println("4. LISTAR HABILIDADES");
+							System.out.println("5. VOLVER ATRÁS");
+							System.out.println(LIGHT_YELLOW
+									+ "-----------------------------------------------------------------------------------"
+									+ RESET);
+							
+							int opSubPersonajeHab = sc.nextInt();
+							
+							switch (opSubPersonajeHab) {
+							case 1:
+								habilidadDAO.agregarHabilidad();
+								break;
+							case 2:
+								habilidadDAO.modificarHabilidad();
+								break;
+							case 3:
+								habilidadDAO.eliminarHabilidad();
+								break;
+							case 4:
+								habilidadDAO.mostrarHabilidades();
+								break;
+							case 5:
+								System.out.println("Volviendo atrás");
+								break;
+
+							default:
+								System.out.println("Opción inválida");
+								break;
+							}
+							break;
+						case 2:
+							System.out.println(LIGHT_YELLOW
+									+ "-----------------------------------------------------------------------------------"
+									+ RESET);
+							System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET
+									+ LIGHT_YELLOW + "| <---------------------------------------" + RESET);
+							System.out.println("1. AGREGAR ITEM");
+							System.out.println("2. MODIFICAR ITEM");
+							System.out.println("3. ELIMINAR ITEM");
+							System.out.println("4. LISTAR ITEMS");
+							System.out.println("5. VOLVER ATRÁS");
+							System.out.println(LIGHT_YELLOW
+									+ "-----------------------------------------------------------------------------------"
+									+ RESET);
+							int opSubPersonajesItems = sc.nextInt();
+							
+							switch (opSubPersonajesItems) {
+							case 1:
+								itemsDAO.agregarItem();
+								break;
+							case 2:
+								itemsDAO.modificarItem();
+								break;
+							case 3:
+								itemsDAO.eliminarItem();
+								break;
+							case 4:
+								itemsDAO.mostrarItems();
+								break;
+							case 5:
+								System.out.println("Volviendo atrás");
+								break;
+
+							default:
+								System.out.println("Opción inválida");
+								break;
+							}
+							break;
+						case 3:
+							System.out.println("Volviendo atrás...");
+							break;
+
+						default:
+							break;
+						}
+					break;
+				case 6:
 					System.out.println("Volviendo atrás");
 					break;
 
@@ -274,10 +380,11 @@ public class Juego {
 						+ RESET);
 				System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET
 						+ LIGHT_YELLOW + "| <---------------------------------------" + RESET);
-				System.out.println("1. ACTIVAR DALTONISMO");
-				System.out.println("2. ACTIVAR DALTONISMO V2");
-				System.out.println("3. DESACTIVAR DALTONISMO");
-				System.out.println("4. VOLVER ATRÁS");
+				System.out.println("1. ACTIVAR DALTONISMO A");
+				System.out.println("2. ACTIVAR DALTONISMO B");
+				System.out.println("3. ACTIVAR DALTONISMO C");
+				System.out.println("4. DESACTIVAR DALTONISMO");
+				System.out.println("5. VOLVER ATRÁS");
 				System.out.println(LIGHT_YELLOW
 						+ "-----------------------------------------------------------------------------------"
 						+ RESET);
@@ -289,12 +396,15 @@ public class Juego {
 					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.PURPLE_BACKGROUND_BRIGHT));
 					break;
 				case 2:
-					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.BLUE_BOLD));
+					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.GREEN_BACKGROUND_BRIGHT));
 					break;
 				case 3:
-					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.RESET));
+					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.RED_BACKGROUND_BRIGHT));
 					break;
 				case 4:
+					System.setOut(new ColoredPrintStream(System.out, ConsoleColors.RESET));
+					break;
+				case 5:
 					System.out.println("Volviendo atrás");
 					break;
 
@@ -323,6 +433,7 @@ public class Juego {
 				System.out.println("Acción inválida");
 				break;
 			}
+			jugadoresDisponibles.clear();
 		} while (opMenuPrincipal != 4);
 		sc.close();
 	}
@@ -333,41 +444,126 @@ public class Juego {
 
 	private static ArrayList<Jugador> cargarJugadores() {
 		ArrayList<Jugador> jugadoresDisponibles = new ArrayList<>();
-		// Profesores ya predefinidos
-		jugadoresDisponibles.add(new Profesor(1, "Angelica", 150, 30, 50, "Prog"));
-		jugadoresDisponibles.add(new Profesor(2, "Angelica", 150, 30, 50, "Bdd"));
-		jugadoresDisponibles.add(new Profesor(3, "Angelica", 150, 30, 50, "Ed"));
-		jugadoresDisponibles.add(new Profesor(4, "Gema", 130, 50, 40, "Html"));
-		jugadoresDisponibles.add(new Profesor(5, "Gema", 130, 50, 40, "Si"));
-		jugadoresDisponibles.add(new Profesor(6, "laDeFol", 120, 25, 35, "Fol"));
+		Connection connection = null;
 
-		// Alumnos ya predefinidos
-		jugadoresDisponibles.add(new Alumno(7, "Carlos MañanaDejoDeFumar", 140, 40, 40, "1 DAM"));
-		jugadoresDisponibles.add(new Alumno(8, "Ale Machaca", 50, 100, 30, "1 DAM"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Ricardo NoFaltes"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Pedro Tengo2Asignaturas"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Manuel Vapesito"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Manuel Cigarrito"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Javi Preguntas"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Ruben Responsable"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Jimmie Teclado"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Jaime Calmado"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Pablo Tranquilito"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Hugo Sobrao'"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Maria Delegada en Funciones"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Caido en combate Pablo"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Legendario Francisco Vallas"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Un tal Alberto"));
-		jugadoresDisponibles.add(agregarJugadorAleatorio("Una tal Lourdes"));
+		try {
+			// Conecta a la base de datos
+			connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-		// Padres ya predefinidos
-		jugadoresDisponibles.add(new Padre(9, "Isabel", 111, 22, 33, "madre"));
-		jugadoresDisponibles.add(new Padre(10, "Jose Luis", 111, 22, 33, "padre"));
-		jugadoresDisponibles.add(new Padre(11, "Maricarmen", 111, 22, 33, "madre"));
-		jugadoresDisponibles.add(new Padre(12, "Francisco", 111, 22, 33, "padre"));
+			// Carga los jugadores por tipo
+			jugadoresDisponibles.addAll(cargarProfesores(connection));
+			jugadoresDisponibles.addAll(cargarAlumnos(connection));
+			jugadoresDisponibles.addAll(cargarPadres(connection));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// Cierra la conexión
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 		return jugadoresDisponibles;
 	}
+
+	private static ArrayList<Profesor> cargarProfesores(Connection connection) throws SQLException {
+		ArrayList<Profesor> profesores = new ArrayList<>();
+		String sql = "SELECT j.id_jugador, j.nombre, j.vida, j.ataque, j.defensa, p.asignatura " + "FROM Jugador j "
+				+ "JOIN Profesor p ON j.id_jugador = p.id_jugador";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+			while (resultSet.next()) {
+				int id = resultSet.getInt("id_jugador");
+				String nombre = resultSet.getString("nombre");
+				int vida = resultSet.getInt("vida");
+				int ataque = resultSet.getInt("ataque");
+				int defensa = resultSet.getInt("defensa");
+				String asignatura = resultSet.getString("asignatura");
+				profesores.add(new Profesor(id, nombre, vida, ataque, defensa, asignatura));
+			}
+		}
+		return profesores;
+	}
+
+	private static ArrayList<Alumno> cargarAlumnos(Connection connection) throws SQLException {
+		ArrayList<Alumno> alumnos = new ArrayList<>();
+		String sql = "SELECT j.id_jugador, j.nombre, j.vida, j.ataque, j.defensa, a.curso " + "FROM Jugador j "
+				+ "JOIN Alumno a ON j.id_jugador = a.id_jugador";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+			while (resultSet.next()) {
+				int id = resultSet.getInt("id_jugador");
+				String nombre = resultSet.getString("nombre");
+				int vida = resultSet.getInt("vida");
+				int ataque = resultSet.getInt("ataque");
+				int defensa = resultSet.getInt("defensa");
+				String curso = resultSet.getString("curso");
+				alumnos.add(new Alumno(id, nombre, vida, ataque, defensa, curso));
+			}
+		}
+		return alumnos;
+	}
+
+	private static ArrayList<Padre> cargarPadres(Connection connection) throws SQLException {
+		ArrayList<Padre> padres = new ArrayList<>();
+		String sql = "SELECT j.id_jugador, j.nombre, j.vida, j.ataque, j.defensa, pa.sexo " + "FROM Jugador j "
+				+ "JOIN Padre pa ON j.id_jugador = pa.id_jugador";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+			while (resultSet.next()) {
+				int id = resultSet.getInt("id_jugador");
+				String nombre = resultSet.getString("nombre");
+				int vida = resultSet.getInt("vida");
+				int ataque = resultSet.getInt("ataque");
+				int defensa = resultSet.getInt("defensa");
+				String sexo = resultSet.getString("sexo");
+				padres.add(new Padre(id, nombre, vida, ataque, defensa, sexo));
+			}
+		}
+		return padres;
+	}
+
+//	private static ArrayList<Jugador> cargarJugadores() {
+//		ArrayList<Jugador> jugadoresDisponibles = new ArrayList<>();
+//		// Profesores ya predefinidos
+//		jugadoresDisponibles.add(new Profesor(1, "Angelica", 150, 30, 50, "Prog"));
+//		jugadoresDisponibles.add(new Profesor(2, "Angelica", 150, 30, 50, "Bdd"));
+//		jugadoresDisponibles.add(new Profesor(3, "Angelica", 150, 30, 50, "Ed"));
+//		jugadoresDisponibles.add(new Profesor(4, "Gema", 130, 50, 40, "Html"));
+//		jugadoresDisponibles.add(new Profesor(5, "Gema", 130, 50, 40, "Si"));
+//		jugadoresDisponibles.add(new Profesor(6, "laDeFol", 120, 25, 35, "Fol"));
+//
+//		// Alumnos ya predefinidos
+//		jugadoresDisponibles.add(new Alumno(7, "Carlos MañanaDejoDeFumar", 140, 40, 40, "1 DAM"));
+//		jugadoresDisponibles.add(new Alumno(8, "Ale Machaca", 50, 100, 30, "1 DAM"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Ricardo NoFaltes"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Pedro Tengo2Asignaturas"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Manuel Vapesito"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Manuel Cigarrito"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Javi Preguntas"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Ruben Responsable"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Jimmie Teclado"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Jaime Calmado"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Pablo Tranquilito"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Hugo Sobrao'"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Maria Delegada en Funciones"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Caido en combate Pablo"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Legendario Francisco Vallas"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Un tal Alberto"));
+//		jugadoresDisponibles.add(agregarJugadorAleatorio("Una tal Lourdes"));
+//
+//		// Padres ya predefinidos
+//		jugadoresDisponibles.add(new Padre(9, "Isabel", 111, 22, 33, "madre"));
+//		jugadoresDisponibles.add(new Padre(10, "Jose Luis", 111, 22, 33, "padre"));
+//		jugadoresDisponibles.add(new Padre(11, "Maricarmen", 111, 22, 33, "madre"));
+//		jugadoresDisponibles.add(new Padre(12, "Francisco", 111, 22, 33, "padre"));
+//
+//		return jugadoresDisponibles;
+//	}
 
 	public static void imprimirListas(ArrayList<Jugador> jugadoresDisponibles) {
 		System.out.println("Personajes disponibles:");
@@ -375,8 +571,58 @@ public class Juego {
 			System.out.println(jugador.getNombre() + " " + jugador.getVida() + " " + jugador.getAtaque() + " "
 					+ jugador.getDefensa());
 		}
-
 	}
+
+	public static void imprimirAlumnos() {
+		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+			ArrayList<Alumno> alumnos = cargarAlumnos(connection);
+			System.out.println("Alumnos:");
+			for (Alumno alumno : alumnos) {
+				System.out.println("ID: " + alumno.getIdJugador() + ", Nombre: " + alumno.getNombre() + ", Vida: "
+						+ alumno.getVida() + ", Ataque: " + alumno.getAtaque() + ", Defensa: " + alumno.getDefensa()
+						+ ", Curso: " + alumno.getCurso());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void imprimirPadres() {
+		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+			ArrayList<Padre> padres = cargarPadres(connection);
+			System.out.println("Padres:");
+			for (Padre padre : padres) {
+				System.out.println("ID: " + padre.getIdJugador() + ", Nombre: " + padre.getNombre() + ", Vida: "
+						+ padre.getVida() + ", Ataque: " + padre.getAtaque() + ", Defensa: " + padre.getDefensa()
+						+ ", Sexo: " + padre.getSexo());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void imprimirProfesores() {
+		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+			ArrayList<Profesor> profesores = cargarProfesores(connection);
+			System.out.println("Profesores:");
+			for (Profesor profesor : profesores) {
+				System.out.println("ID: " + profesor.getIdJugador() + ", Nombre: " + profesor.getNombre() + ", Vida: "
+						+ profesor.getVida() + ", Ataque: " + profesor.getAtaque() + ", Defensa: "
+						+ profesor.getDefensa() + ", Asignatura: " + profesor.getAsignatura());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+//	public static void imprimirListas(ArrayList<Jugador> jugadoresDisponibles) {
+//		System.out.println("Personajes disponibles:");
+//		for (Jugador jugador : jugadoresDisponibles) {
+//			System.out.println(jugador.getNombre() + " " + jugador.getVida() + " " + jugador.getAtaque() + " "
+//					+ jugador.getDefensa());
+//		}
+//
+//	}
 
 	public static Jugador agregarJugadorAleatorio(String nombre) {
 		int idAleatoria = generarNumeroAleatorio(0, 110);
@@ -474,15 +720,15 @@ public class Juego {
 		System.out.println("COMIENZA EL COMBATE");
 	}
 
-	public static <T extends Jugador> List<T> filtrarYImprimirJugadoresPorTipo(List<Jugador> jugadores, Class<T> tipo) {
-		List<T> listaFiltrada = jugadores.stream().filter(jugador -> tipo.isInstance(jugador))
-				.map(jugador -> tipo.cast(jugador)).collect(Collectors.toList());
-
-		System.out.println(LIGHT_YELLOW + "Jugadores de tipo " + RESET + YELLOW + tipo.getSimpleName() + RESET
-				+ LIGHT_YELLOW + ":" + RESET);
-		listaFiltrada.forEach(System.out::println);
-		System.out.println();
-
-		return listaFiltrada;
-	}
+//	public static <T extends Jugador> List<T> filtrarYImprimirJugadoresPorTipo(List<Jugador> jugadores, Class<T> tipo) {
+//		List<T> listaFiltrada = jugadores.stream().filter(jugador -> tipo.isInstance(jugador))
+//				.map(jugador -> tipo.cast(jugador)).collect(Collectors.toList());
+//
+//		System.out.println(LIGHT_YELLOW + "Jugadores de tipo " + RESET + YELLOW + tipo.getSimpleName() + RESET
+//				+ LIGHT_YELLOW + ":" + RESET);
+//		listaFiltrada.forEach(System.out::println);
+//		System.out.println();
+//
+//		return listaFiltrada;
+//	}
 }

@@ -14,6 +14,10 @@ public class Alumno extends Jugador {
             throw new IllegalArgumentException("El curso debe ser '1 DAM', '1' o 'DESERTOR'.");
         }
     }
+    
+	public String getCurso() {
+		return curso;
+	}
 
     public void setCurso(String curso) {
         if (curso.equalsIgnoreCase("1 DAM") || curso.equals("1") || curso.equalsIgnoreCase("DESERTOR")) {
@@ -22,7 +26,23 @@ public class Alumno extends Jugador {
             throw new IllegalArgumentException("El curso debe ser '1 DAM', '1' o 'DESERTOR'.");
         }
     }
+    
 
+	@Override
+	public String toString() {
+		final String RESET = "\u001B[0m";
+		final String RED = "\u001B[31m";
+		final String CYAN = "\u001B[36m";
+		final String WHITE = "\u001B[37m";
+		final String PINK = "\u001B[95m";
+		final String LIGHT_GREEN = "\u001B[92m";
+		final String YELLOW = "\u001B[33m";
+		final String LIGHT_YELLOW = "\u001B[93m";
+
+		return ""+YELLOW+"Alumno [ " +RESET+ LIGHT_YELLOW + "nombre=" + RESET + WHITE + nombre + RESET + LIGHT_GREEN + ", vida=" + RESET + WHITE
+				+ vida + RESET + RED + ", ataque=" + RESET + WHITE + ataque + RESET + CYAN + ", defensa=" + RESET
+				+ WHITE + defensa + RESET + PINK + ", curso=" + RESET + WHITE + curso + RESET + " ]";
+	}
     
 	@Override
 	public void atacar(Jugador oponente) {
@@ -64,19 +84,4 @@ public class Alumno extends Jugador {
 		items[3] = new Items(4, GREEN+"Usar Cascos: "+RESET+LIGHT_GREEN+"'La música es poder'"+RESET, 40, 20);
 	}
 
-	@Override
-	public String toString() {
-		final String RESET = "\u001B[0m";
-		final String RED = "\u001B[31m";
-		final String CYAN = "\u001B[36m";
-		final String WHITE = "\u001B[37m";
-		final String PINK = "\u001B[95m";
-		final String LIGHT_GREEN = "\u001B[92m";
-		final String YELLOW = "\u001B[33m";
-		final String LIGHT_YELLOW = "\u001B[93m";
-
-		return ""+YELLOW+"Alumno [ " +RESET+ LIGHT_YELLOW + "nombre=" + RESET + WHITE + nombre + RESET + LIGHT_GREEN + ", vida=" + RESET + WHITE
-				+ vida + RESET + RED + ", ataque=" + RESET + WHITE + ataque + RESET + CYAN + ", defensa=" + RESET
-				+ WHITE + defensa + RESET + PINK + ", curso=" + RESET + WHITE + curso + RESET + " ]";
-	}
 }
