@@ -16,6 +16,17 @@ public class Padre extends Jugador {
     private static final String LIGHT_YELLOW = "\u001B[93m";
     private static final String GREEN = "\u001B[32m";
 
+    /**
+     * Crea un nuevo objeto Padre con el ID del jugador, nombre, vida, ataque, defensa y sexo especificados.
+     * 
+     * @param idJugador El ID del jugador
+     * @param nombre El nombre del jugador
+     * @param vida La vida del jugador
+     * @param ataque El valor de ataque del jugador
+     * @param defensa El valor de defensa del jugador
+     * @param sexo El sexo del padre ('padre' o 'madre')
+     * @throws IllegalArgumentException Si el sexo no es 'padre' o 'madre'
+     */
     public Padre(int idJugador, String nombre, int vida, int ataque, int defensa, String sexo) {
         super(idJugador, nombre, vida, ataque, defensa);
         if (sexo.equalsIgnoreCase("padre") || sexo.equalsIgnoreCase("madre")) {
@@ -25,10 +36,22 @@ public class Padre extends Jugador {
         }
     }
 
+    /**
+     * Devuelve el sexo del jugador.
+     * 
+     * @return El sexo del jugador ('padre' o 'madre')
+     */
     public String getSexo() {
         return sexo;
     }
 
+    
+    /**
+     * Establece el sexo del jugador.
+     * 
+     * @param sexo El sexo del jugador ('padre' o 'madre')
+     * @throws IllegalArgumentException si el sexo no es 'padre' o 'madre'
+     */
     public void setSexo(String sexo) {
         if (sexo.equalsIgnoreCase("padre") || sexo.equalsIgnoreCase("madre")) {
             this.sexo = sexo.toLowerCase();
@@ -37,6 +60,12 @@ public class Padre extends Jugador {
         }
     }
     
+    /**
+     * Realiza un ataque contra un jugador oponente utilizando una habilidad y, opcionalmente, un item.
+     * La probabilidad de usar un item en cada ataque es del 30%.
+     * 
+     * @param oponente El jugador oponente que será atacado.
+     */
 	@Override
 	public void atacar(Jugador oponente) {
 		Habilidad habilidad = seleccionarHabilidad();
@@ -53,6 +82,11 @@ public class Padre extends Jugador {
 		}
 	}
 
+	/**
+	 * Inicializa las habilidades específicas del jugador.
+	 * Cada habilidad se inicializa con un identificador único, un nombre, un mensaje de descripción,
+	 * un valor de ataque, un valor de defensa y una probabilidad de crítico.
+	 */
 	@Override
 	protected void inicializarHabilidades() {
 		habilidades[0] = new Habilidad(1, GREEN+"Elocuencia: "+RESET+LIGHT_GREEN+"'Se lo camela básicamente'"+RESET, 20, 0, 0.20); // 20% probabilidad de crítico
@@ -61,6 +95,13 @@ public class Padre extends Jugador {
 		habilidades[3] = new Habilidad(4, GREEN+"Justificar a mi hijo: "+RESET+LIGHT_GREEN+"'Mi hijo ese dia estaba malo, lo juro.'"+RESET, 15, -3, 0.30); // 60% probabilidad de crítico
 	}
 	
+	/**
+	 * Inicializa los elementos del array de items del jugador con valores predefinidos.
+	 * Los valores predefinidos incluyen varios elementos con diferentes características.
+	 * 
+	 * Cada elemento del array de items se inicializa con un ID, un nombre, un poder,
+	 * y una mejora de combate.
+	 */
 	@Override
 	protected void inicializarItems() {
 		items[0] = new Items(1, GREEN+"Beber Cerveza: "+RESET+LIGHT_GREEN+"'Además muy fría'"+RESET, 25, 20);
@@ -69,6 +110,11 @@ public class Padre extends Jugador {
 		items[3] = new Items(4, GREEN+"Usa la chancla: "+RESET+LIGHT_GREEN+"'Se pueden hacer muchas cosas con una chancla'"+RESET, 10, 20);
 	}
 
+	/**
+	 * Devuelve una representación en forma de cadena de texto del objeto Padre.
+	 * 
+	 * @return Una cadena que representa al objeto Padre, con detalles sobre su nombre, vida, ataque, defensa y sexo.
+	 */
 	@Override
 	public String toString() {
 		return ""+YELLOW+"Padre [ " +RESET+ LIGHT_YELLOW + "nombre=" + RESET + WHITE + nombre + RESET + LIGHT_GREEN + ", vida=" + RESET + WHITE

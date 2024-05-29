@@ -1,68 +1,124 @@
 package juego_app;
 
+/**
+ * La clase Items representa un ítem en el juego, que puede tener un efecto en 
+ * el poder y la defensa de los jugadores.
+ */
 public class Items {
 
-	private int idItem;
-	private String nombre;
-	private int poder;
-	private int mejoraCombate;
+    private int idItem;
+    private String nombre;
+    private int poder;
+    private int mejoraCombate;
 
-	public Items(int idItem, String nombre, int poder, int mejoraCombate) {
-		this.idItem = idItem;
-		this.nombre = nombre;
-		this.poder = poder;
-		this.mejoraCombate = mejoraCombate;
-	}
+    /**
+     * Constructor que inicializa un objeto Items con todos los atributos.
+     * 
+     * @param idItem El ID del ítem.
+     * @param nombre El nombre del ítem.
+     * @param poder El poder del ítem.
+     * @param mejoraCombate La mejora en combate proporcionada por el ítem.
+     */
+    public Items(int idItem, String nombre, int poder, int mejoraCombate) {
+        this.idItem = idItem;
+        this.nombre = nombre;
+        this.poder = poder;
+        this.mejoraCombate = mejoraCombate;
+    }
 
-	public Items(String nombre, int poder, int mejoraCombate) {
-		this.nombre = nombre;
-		this.poder = poder;
-		this.mejoraCombate = mejoraCombate;
-	}
+    /**
+     * Constructor que inicializa un objeto Items sin el ID del ítem.
+     * 
+     * @param nombre El nombre del ítem.
+     * @param poder El poder del ítem.
+     * @param mejoraCombate La mejora en combate proporcionada por el ítem.
+     */
+    public Items(String nombre, int poder, int mejoraCombate) {
+        this.nombre = nombre;
+        this.poder = poder;
+        this.mejoraCombate = mejoraCombate;
+    }
 
-	public int getIdItem() {
-		return idItem;
-	}
+    /**
+     * Obtiene el ID del ítem.
+     * 
+     * @return El ID del ítem.
+     */
+    public int getIdItem() {
+        return idItem;
+    }
 
-	public void setIdItem(int idItem) {
-		this.idItem = idItem;
-	}
+    /**
+     * Establece el ID del ítem.
+     * 
+     * @param idItem El ID del ítem.
+     */
+    public void setIdItem(int idItem) {
+        this.idItem = idItem;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    /**
+     * Obtiene el nombre del ítem.
+     * 
+     * @return El nombre del ítem.
+     */
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    /**
+     * Establece el nombre del ítem.
+     * 
+     * @param nombre El nombre del ítem.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public int getPoder() {
-		return poder;
-	}
+    /**
+     * Obtiene el poder del ítem.
+     * 
+     * @return El poder del ítem.
+     */
+    public int getPoder() {
+        return poder;
+    }
 
-	public void setPoder(int poder) {
-		this.poder = poder;
-	}
+    /**
+     * Establece el poder del ítem.
+     * 
+     * @param poder El poder del ítem.
+     */
+    public void setPoder(int poder) {
+        this.poder = poder;
+    }
 
-	public int getPenalizacionDefensa() {
-		return mejoraCombate;
-	}
+    /**
+     * Obtiene la mejora en combate del ítem.
+     * 
+     * @return La mejora en combate del ítem.
+     */
+    public int getMejoraCombate() {
+        return mejoraCombate;
+    }
 
-	public void setPenalizacionDefensa(int penalizacionDefensa) {
-		this.mejoraCombate = penalizacionDefensa;
-	}
+    /**
+     * Establece la mejora en combate del ítem.
+     * 
+     * @param mejoraCombate La mejora en combate del ítem.
+     */
+    public void setMejoraCombate(int mejoraCombate) {
+        this.mejoraCombate = mejoraCombate;
+    }
 
-	public int getMejoraCombate() {
-		return mejoraCombate;
-	}
-
-	public void setMejoraCombate(int mejoraCombate) {
-		this.mejoraCombate = mejoraCombate;
-	}
-
-	public void usarItem(Jugador atacante, Jugador objetivo) {
-		objetivo.setVida(objetivo.getVida() + this.poder);
-		objetivo.setDefensa(objetivo.getDefensa() + this.mejoraCombate);
-	}
-
+    /**
+     * Usa el ítem, aplicando sus efectos al jugador objetivo.
+     * 
+     * @param atacante El jugador que usa el ítem.
+     * @param objetivo El jugador objetivo sobre el que se aplica el ítem.
+     */
+    public void usarItem(Jugador atacante, Jugador objetivo) {
+        objetivo.setVida(objetivo.getVida() + this.poder);
+        objetivo.setDefensa(objetivo.getDefensa() + this.mejoraCombate);
+    }
 }

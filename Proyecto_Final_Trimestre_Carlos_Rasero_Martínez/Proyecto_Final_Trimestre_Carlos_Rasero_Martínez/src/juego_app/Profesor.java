@@ -16,6 +16,17 @@ public class Profesor extends Jugador {
     private static final String LIGHT_YELLOW = "\u001B[93m";
     private static final String GREEN = "\u001B[32m";
 
+    /**
+     * Crea un nuevo objeto Profesor con los atributos proporcionados.
+     * 
+     * @param idJugador El identificador del jugador.
+     * @param nombre El nombre del profesor.
+     * @param vida La cantidad de vida del profesor.
+     * @param ataque El valor de ataque del profesor.
+     * @param defensa El valor de defensa del profesor.
+     * @param asignatura La asignatura que enseña el profesor. Debe ser 'prog', 'html', 'bdd', 'si', 'ed' o 'fol'.
+     * @throws IllegalArgumentException Si la asignatura proporcionada no es válida.
+     */
 	public Profesor(int idJugador, String nombre, int vida, int ataque, int defensa, String asignatura) {
 		super(idJugador, nombre, vida, ataque, defensa);
 		if (asignatura.equalsIgnoreCase("prog") || asignatura.equalsIgnoreCase("html")
@@ -27,10 +38,21 @@ public class Profesor extends Jugador {
 		}
 	}
 
+	/**
+	 * Obtiene la asignatura del profesor.
+	 * 
+	 * @return La asignatura del profesor.
+	 */
 	public String getAsignatura() {
 		return asignatura;
 	}
 
+	/**
+	 * Establece la asignatura que enseña el profesor.
+	 * 
+	 * @param asignatura La asignatura que enseña el profesor. Debe ser 'prog', 'html', 'bdd', 'si' o 'ed'.
+	 * @throws IllegalArgumentException Si la asignatura proporcionada no es válida.
+	 */
 	public void setAsignatura(String asignatura) {
 		if (asignatura.equalsIgnoreCase("prog") || asignatura.equalsIgnoreCase("html")
 				|| asignatura.equalsIgnoreCase("bdd") || asignatura.equalsIgnoreCase("si")
@@ -41,6 +63,11 @@ public class Profesor extends Jugador {
 		}
 	}
 
+	/**
+	 * Realiza un ataque contra un oponente, utilizando una habilidad y, opcionalmente, un ítem.
+	 * 
+	 * @param oponente El jugador contra el que se realizará el ataque.
+	 */
 	@Override
 	public void atacar(Jugador oponente) {
 		Habilidad habilidad = seleccionarHabilidad();
@@ -58,6 +85,12 @@ public class Profesor extends Jugador {
 		}
 	}
 
+	/**
+	 * Inicializa las habilidades del profesor.
+	 * 
+	 * Cada habilidad se inicializa con un ID único, un nombre, puntos de ataque,
+	 * puntos de defensa y probabilidad de éxito.
+	 */
 	@Override
 	protected void inicializarHabilidades() {
 		habilidades[0] = new Habilidad(1, GREEN + "Poner Examen Sorpresa: " + RESET + LIGHT_GREEN + "'Nadie lo ve venir'" + RESET, 25, -3, 0.20);
@@ -66,6 +99,11 @@ public class Profesor extends Jugador {
 		habilidades[3] = new Habilidad(4, GREEN + "Salvar: " + RESET + LIGHT_GREEN + "'Pasa de un 4 a un 5'" + RESET, 20, 3, 0.40);
 	}
 
+	/**
+	 * Inicializa los items del profesor.
+	 * 
+	 * Cada item se inicializa con un ID único, un nombre, puntos de ataque y puntos de defensa.
+	 */
 	@Override
 	protected void inicializarItems() {
 		items[0] = new Items(1, GREEN + "Beber Café: " + RESET + LIGHT_GREEN + "'Gracias al cafe, aguanta 3H mas'" + RESET, 25, 20);
@@ -74,6 +112,12 @@ public class Profesor extends Jugador {
 		items[3] = new Items(4, GREEN + "Tirar Internet: " + RESET + LIGHT_GREEN + "'Obliga al jugador a tener que irse, sube mucho la salud'" + RESET, 90, 30);
 	}
 
+	/**
+	 * Devuelve una representación en forma de cadena del objeto Profesor.
+	 * 
+	 * @return Una cadena que representa al Profesor, incluyendo nombre, vida, ataque,
+	 *         defensa y asignatura.
+	 */
 	@Override
 	public String toString() {
 		return "" + YELLOW + "Profesor [ " + RESET + LIGHT_YELLOW + "nombre=" + RESET + WHITE + nombre + RESET

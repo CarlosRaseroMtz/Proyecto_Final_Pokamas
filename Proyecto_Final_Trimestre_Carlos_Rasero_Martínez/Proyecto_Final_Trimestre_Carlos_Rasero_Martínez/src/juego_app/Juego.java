@@ -34,6 +34,13 @@ public class Juego {
 		HabilidadDAO habilidadDAO = new HabilidadDAO();
 		ItemsDAO itemsDAO = new ItemsDAO();
 		ArrayList<Jugador> jugadoresDisponibles = cargarJugadores();
+		
+		Scanner sc = new Scanner(System.in);
+		int opMenuPrincipal = 0;
+		int opMenuJuego = 0;
+		int opMenuPersonajes = 0;
+		int opMenuAjustes = 0;
+		int opSubPersonajes = 0;
 
 		// ESTO ES UNA CHORRADA
 		System.out.println(".....");
@@ -41,30 +48,8 @@ public class Juego {
 		System.out.println("INICIANDO..");
 		System.out.println("INICIANDO.....");
 		System.out.println("................");
-
-		// INSERTAR HABILIDADES E ITEMS PARA PROFESOR
-		Habilidad[] habilidadesPr = new Habilidad[4];
-		habilidadesPr[0] = new Habilidad(1, GREEN + "Poner Examen Sorpresa: " + RESET + LIGHT_GREEN + "'Nadie lo ve venir'" + RESET, 25, -3, 0.20);
-		habilidadesPr[1] = new Habilidad(2, GREEN + "Enfado: " + RESET + LIGHT_GREEN + "'Con razon por no estudiar'" + RESET, 20, -1, 0.30);
-		habilidadesPr[2] = new Habilidad(3, GREEN + "Usar Moodle: " + RESET + LIGHT_GREEN + "'La usa (pero a nadie le gusta*)'" + RESET, 15, 1, 0.50);
-		habilidadesPr[3] = new Habilidad(4, GREEN + "Salvar: " + RESET + LIGHT_GREEN + "'Pasa de un 4 a un 5'" + RESET, 20, 3, 0.40);
-
-		for (Habilidad habilidad : habilidadesPr) {
-			habilidadDAO.insertarHabilidad(habilidad);
-		}
-		itemsDAO.insertarItemsPr();
-
-		// INSERTAR HABILIDADES E ITEMS PARA PADRE
-		Habilidad[] habilidadesPa = new Habilidad[4];
-		habilidadesPa[0] = new Habilidad(1, GREEN + "Elocuencia: " + RESET + LIGHT_GREEN + "'Se lo camela básicamente'" + RESET, 20, 0, 0.20);
-		habilidadesPa[1] = new Habilidad(2, GREEN + "Indignacion: " + RESET + LIGHT_GREEN + "'Se indigna tanto que le dices vale.'" + RESET, 20, 0, 0.30);
-		habilidadesPa[2] = new Habilidad(3, GREEN + "Ser Del AMPA: " + RESET + LIGHT_GREEN + "'Prácticamente tiene acciones del colegio'" + RESET, 25, 3, 0.60);
-		habilidadesPa[3] = new Habilidad(4, GREEN + "Justificar a mi hijo: " + RESET + LIGHT_GREEN + "'Mi hijo ese dia estaba malo, lo juro.'" + RESET, 15, -3, 0.30);
-
-		for (Habilidad habilidad : habilidadesPa) {
-			habilidadDAO.insertarHabilidad(habilidad);
-		}
-		itemsDAO.insertarItemsPa();
+		
+		cargarItems();
 		
 		// ESTO ES UNA CHORRADA
 		System.out.println("..................");
@@ -73,17 +58,7 @@ public class Juego {
 		System.out.println("GRACIAS POR TU PACIENCIA");
 		System.out.println("......................");
 
-		// INSERTAR HABILIDADES E ITEMS PARA ALUMNO
-		Habilidad[] habilidadesAl = new Habilidad[4];
-		habilidadesAl[0] = new Habilidad(1, GREEN + "Mentir: " + RESET + LIGHT_GREEN + "Falló la habilidad*('Se mintió a sí mismo')." + RESET, 10, -10, 0.50);
-		habilidadesAl[1] = new Habilidad(2, GREEN + "Usar ChatGPT: " + RESET + LIGHT_GREEN + "'Un gran poder conlleva una gran responsabilidad.'" + RESET, 25, -5, 0.20);
-		habilidadesAl[2] = new Habilidad(3, GREEN + "Estudiar: " + RESET + LIGHT_GREEN + "Esta habilidad siempre acierta al objetivo" + RESET, 25, 20, 0.40);
-		habilidadesAl[3] = new Habilidad(4, GREEN + "Faltar: " + RESET + LIGHT_GREEN + "'Hoy me quedo en casita.'" + RESET, 20, 3, 0.30); 
-		
-		for (Habilidad habilidad : habilidadesAl) {
-			habilidadDAO.insertarHabilidad(habilidad);
-		}
-		itemsDAO.insertarItemsAl();
+		cargarHabilidades();
 		
 		// ESTO ES UNA CHORRADA
 		System.out.println("............................");
@@ -95,12 +70,6 @@ public class Juego {
 		System.out.println("GEIM FRIK ESTUDIOS PRESENTA");
 		System.out.println("-->POKAMAS<--");
 
-		Scanner sc = new Scanner(System.in);
-		int opMenuPrincipal = 0;
-		int opMenuJuego = 0;
-		int opMenuPersonajes = 0;
-		int opMenuAjustes = 0;
-		int opSubPersonajes = 0;
 
 		do {
 			jugadoresDisponibles = cargarJugadores();
@@ -119,8 +88,8 @@ public class Juego {
 				System.out.println(LIGHT_YELLOW + "-----------------------------------------------------------------------------------" + RESET);
 				System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET + LIGHT_YELLOW + "| <---------------------------------------" + RESET);
 				System.out.println("1. MODO HISTORIA");
-				System.out.println("2. COMBATE RÁPIDO");
-				System.out.println("3. VOLVER ATRÁS");
+				System.out.println("2. COMBATE RAPIDO");
+				System.out.println("3. VOLVER ATRAS");
 				System.out.println(LIGHT_YELLOW + "-----------------------------------------------------------------------------------" + RESET);
 				opMenuJuego = sc.nextInt();
 
@@ -150,10 +119,10 @@ public class Juego {
 
 						if (decisionPr == 1) {
 							caminoIzquierdaPr();
-							jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(3));
+							jugarCombate(jugadoresDisponibles.get(1), jugadoresDisponibles.get(3));
 						} else if (decisionPr == 2) {
 							caminoDerechaPr();
-							jugarCombate(jugadoresDisponibles.get(0), jugadoresDisponibles.get(6));
+							jugarCombate(jugadoresDisponibles.get(2), jugadoresDisponibles.get(13));
 						} else {
 							System.out.println("Por favor, ingresa una respuesta válida (1/2).");
 						}
@@ -171,10 +140,10 @@ public class Juego {
 
 						if (decisionAl == 1) {
 							caminoIzquierdaAl();
-							jugarCombate(jugadoresDisponibles.get(6), jugadoresDisponibles.get(1));
+							jugarCombate(jugadoresDisponibles.get(7), jugadoresDisponibles.get(1));
 						} else if (decisionAl == 2) {
 							caminoDerechaAl();
-							jugarCombate(jugadoresDisponibles.get(6), jugadoresDisponibles.get(25));
+							jugarCombate(jugadoresDisponibles.get(7), jugadoresDisponibles.get(26));
 						} else {
 							System.out.println("Por favor, ingresa una respuesta válida (1/2).");
 						}
@@ -211,7 +180,7 @@ public class Juego {
 				System.out.println("3. ELIMINAR JUGADOR");
 				System.out.println("4. MOSTRAR JUGADORES");
 				System.out.println("5. ITEMS Y HABILIDADES");
-				System.out.println("6. VOLVER ATRÁS");
+				System.out.println("6. VOLVER ATRAS");
 				System.out.println(LIGHT_YELLOW + "-----------------------------------------------------------------------------------"+ RESET);
 				opMenuPersonajes = sc.nextInt(); 
 
@@ -235,7 +204,7 @@ public class Juego {
 					System.out.println(LIGHT_YELLOW + "---------------------> |" + YELLOW + " POKAMAS:submenu " + RESET + LIGHT_YELLOW + "| <---------------------------------------" + RESET);
 					System.out.println("1. HABLIDADES");
 					System.out.println("2. ITEMS");
-					System.out.println("3. VOLVER ATRÁS");
+					System.out.println("3. VOLVER ATRAS");
 					System.out.println(LIGHT_YELLOW + "-----------------------------------------------------------------------------------" + RESET);
 					opSubPersonajes = sc.nextInt();
 						switch (opSubPersonajes) {
@@ -246,7 +215,7 @@ public class Juego {
 							System.out.println("2. MODIFICAR HABILIDAD");
 							System.out.println("3. ELIMINAR HABILIDAD");
 							System.out.println("4. LISTAR HABILIDADES");
-							System.out.println("5. VOLVER ATRÁS");
+							System.out.println("5. VOLVER ATRAS");
 							System.out.println(LIGHT_YELLOW+ "-----------------------------------------------------------------------------------"+ RESET);
 							
 							int opSubPersonajeHab = sc.nextInt();
@@ -280,7 +249,7 @@ public class Juego {
 							System.out.println("2. MODIFICAR ITEM");
 							System.out.println("3. ELIMINAR ITEM");
 							System.out.println("4. LISTAR ITEMS");
-							System.out.println("5. VOLVER ATRÁS");
+							System.out.println("5. VOLVER ATRAS");
 							System.out.println(LIGHT_YELLOW + "-----------------------------------------------------------------------------------" + RESET);
 							int opSubPersonajesItems = sc.nextInt();
 							
@@ -315,7 +284,7 @@ public class Juego {
 						}
 					break;
 				case 6:
-					System.out.println("Volviendo atrás");
+					System.out.println("Volviendo atras");
 					break;
 
 				default:
@@ -331,7 +300,7 @@ public class Juego {
 				System.out.println("2. ACTIVAR DALTONISMO B");
 				System.out.println("3. ACTIVAR DALTONISMO C");
 				System.out.println("4. DESACTIVAR DALTONISMO");
-				System.out.println("5. VOLVER ATRÁS");
+				System.out.println("5. VOLVER ATRAS");
 				System.out.println(LIGHT_YELLOW+ "-----------------------------------------------------------------------------------" + RESET);
 				opMenuAjustes = sc.nextInt();
 				opMenuPrincipal = 0;
@@ -381,7 +350,123 @@ public class Juego {
 //////////////////////////////////////////////////////////
 ////////      METODOS ESTATICOS COMUNES    //////////////
 ////////////////////////////////////////////////////////
+	
+	/**
+	 * Carga las habilidades predefinidas en la base de datos.
+	 * Se insertan habilidades para diferentes tipos de jugadores: Profesores, Padres y Alumnos.
+	 * Cada habilidad se inserta en la tabla "Habilidad" con su respectivo ID, nombre, poder, penalización de defensa y probabilidad de crítico.
+	 * Este método utiliza un lote de inserción para mejorar la eficiencia al realizar múltiples inserciones en la base de datos.
+	 * Si ocurre un error durante la carga de las habilidades, se imprime un mensaje de error.
+	 */
+    public static void cargarHabilidades() {
+        String insertSQL = "INSERT INTO Habilidad (id_habilidad, nombre, poder, penalizacion_def, probabilidad_crit) VALUES (?, ?, ?, ?, ?)";
 
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+
+            // Habilidades de Profesores
+            cargarHabilidad(pstmt, 1, "Elocuencia: Se lo camela básicamente", 20, 0, 0.20);
+            cargarHabilidad(pstmt, 2, "Indignacion: Se indigna tanto que le dices vale.", 20, 0, 0.30);
+            cargarHabilidad(pstmt, 3, "Ser Del AMPA: Prácticamente tiene acciones del colegio", 25, 3, 0.60);
+            cargarHabilidad(pstmt, 4, "Justificar a mi hijo: Mi hijo ese dia estaba malo, lo juro.", 15, -3, 0.30);
+
+            // Habilidades de Padres
+            cargarHabilidad(pstmt, 5, "Poner Examen Sorpresa: Nadie lo ve venir", 25, -3, 0.20);
+            cargarHabilidad(pstmt, 6, "Enfado: Con razon por no estudiar", 20, -1, 0.30);
+            cargarHabilidad(pstmt, 7, "Usar Moodle: La usa (pero a nadie le gusta*)", 15, 1, 0.50);
+            cargarHabilidad(pstmt, 8, "Salvar: Pasa de un 4 a un 5", 20, 3, 0.40);
+            
+            // Habilidades de Alumnos
+            cargarHabilidad(pstmt,9, "Mentir: Falló la habilidad*(Se mintió a sí mismo)", 10, -10, 0.50);
+            cargarHabilidad(pstmt,10, "Usar ChatGPT: Un gran poder conlleva una gran responsabilidad.", 25, -5, 0.20);
+            cargarHabilidad(pstmt,11, "Estudiar: Esta habilidad siempre acierta al objetivo", 25, 20, 0.40);
+            cargarHabilidad(pstmt,12, "Faltar: Hoy me quedo en casita", 20, 3, 0.30);
+
+            pstmt.executeBatch();
+            System.out.println("Habilidades insertadas exitosamente.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    /**
+     * Método para cargar ítems en la base de datos.
+     * Se conecta a la base de datos, inserta los ítems en lotes y los confirma.
+     */
+    public static void cargarItems() {
+        String insertSQL = "INSERT INTO Item (id_item, nombre, poder, mejora_combate) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+
+            // Habilidades de Padres
+            cargarItem(pstmt, 1, "Beber Cerveza: 'Además muy fría'", 25, 20);
+            cargarItem(pstmt, 2, "Ticket exlusivo del AMPA: 'Recuperas toda la salud, aumenta tu ataque y defensa mucho, desde ahora todos te respetan.'", 50, 30);
+            cargarItem(pstmt, 3, "Tomar una tapita en el bar: 'Además una cerveza'", 25, 30);
+            cargarItem(pstmt, 4, "Usa la chancla: 'Se pueden hacer muchas cosas con una chancla'", 15, 20);
+
+            // Habilidades de Profesores
+            cargarItem(pstmt, 5, "Beber Café: 'Gracias al cafe, aguanta 3H mas'", 25, 20);
+            cargarItem(pstmt, 6, "Ir a la sala de profesores: 'Lugar Oculto*'", 25, 30);
+            cargarItem(pstmt, 7, "Poner parte: 'En este instituto no toleramos los saltavallas'", 15, 15);
+            cargarItem(pstmt, 8, "Tirar Internet: 'Obliga al jugador a tener que irse, sube mucho la salud'", 55, 30);
+            
+            // Habilidades de Alumnos
+            cargarItem(pstmt, 9, "Tomar Merienda: 'El recreo es sagrado'", 25, 20);
+            cargarItem(pstmt, 10, "Fumar: 'Recuperas todas las ganas de volver a clase.'", 50, 30);
+            cargarItem(pstmt, 11, "Beber Bebida Energética: 'Te da un Boost a tus 5h de sueño'", 25, 30);
+            cargarItem(pstmt, 12, "Usar Cascos: 'La música es poder'", 20, 20);
+
+            pstmt.executeBatch();
+            System.out.println("Items insertados exitosamente.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Agrega una habilidad al lote de inserción para su posterior inserción en la base de datos.
+     *
+     * @param pstmt            La declaración preparada para la inserción en la base de datos.
+     * @param id               El ID de la habilidad.
+     * @param nombre           El nombre de la habilidad.
+     * @param poder            El poder de la habilidad.
+     * @param penalizacionDef  La penalización de defensa de la habilidad.
+     * @param probabilidadCrit La probabilidad de crítico de la habilidad.
+     * @throws SQLException Si ocurre un error al configurar los parámetros de la declaración preparada.
+     */
+    private static void cargarHabilidad(PreparedStatement pstmt, int id, String nombre, int poder, int penalizacionDef, double probabilidadCrit) throws SQLException {
+        pstmt.setInt(1, id);
+        pstmt.setString(2, nombre);
+        pstmt.setInt(3, poder);
+        pstmt.setInt(4, penalizacionDef);
+        pstmt.setDouble(5, probabilidadCrit);
+        pstmt.addBatch();
+    }
+    
+    /**
+     * Método para cargar un nuevo ítem en la base de datos.
+     * 
+     * @param pstmt         El PreparedStatement utilizado para ejecutar la inserción.
+     * @param id            El ID del ítem.
+     * @param nombre        El nombre del ítem.
+     * @param poder         El poder del ítem.
+     * @param mejoraCombate El nivel de mejora en el combate del ítem.
+     * @throws SQLException Si ocurre algún error de SQL durante la inserción.
+     */
+    private static void cargarItem(PreparedStatement pstmt, int id, String nombre, int poder, int mejoraCombate) throws SQLException {
+        pstmt.setInt(1, id);
+        pstmt.setString(2, nombre);
+        pstmt.setInt(3, poder);
+        pstmt.setInt(4, mejoraCombate);
+        pstmt.addBatch();
+    }
+
+    /**
+     * Carga todos los jugadores disponibles desde la base de datos.
+     *
+     * @return Una lista de todos los jugadores disponibles.
+     */
 	private static ArrayList<Jugador> cargarJugadores() {
 		ArrayList<Jugador> jugadoresDisponibles = new ArrayList<>();
 		Connection connection = null;
@@ -407,13 +492,25 @@ public class Juego {
 		return jugadoresDisponibles;
 	}
 
+	/**
+	 * Carga todos los profesores desde la base de datos y los devuelve como una lista.
+	 *
+	 * @param connection La conexión a la base de datos.
+	 * @return Una lista de objetos Profesor cargados desde la base de datos.
+	 * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+	 */
 	private static ArrayList<Profesor> cargarProfesores(Connection connection) throws SQLException {
+		// Lista para almacenar los profesores cargados desde la base de datos
 		ArrayList<Profesor> profesores = new ArrayList<>();
+		
+		// Consulta SQL para obtener los datos de los profesores
 		String sql = "SELECT j.id_jugador, j.nombre, j.vida, j.ataque, j.defensa, p.asignatura " + "FROM Jugador j "
 				+ "JOIN Profesor p ON j.id_jugador = p.id_jugador";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
 				ResultSet resultSet = preparedStatement.executeQuery()) {
+			// Iterar sobre el resultado de la consulta
 			while (resultSet.next()) {
+				 // Obtener los valores de las columnas de la tabla
 				int id = resultSet.getInt("id_jugador");
 				String nombre = resultSet.getString("nombre");
 				int vida = resultSet.getInt("vida");
@@ -426,6 +523,13 @@ public class Juego {
 		return profesores;
 	}
 
+	/**
+	 * Carga todos los alumnos desde la base de datos y los devuelve como una lista.
+	 *
+	 * @param connection La conexión a la base de datos.
+	 * @return Una lista de objetos Alumno cargados desde la base de datos.
+	 * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+	 */
 	private static ArrayList<Alumno> cargarAlumnos(Connection connection) throws SQLException {
 		ArrayList<Alumno> alumnos = new ArrayList<>();
 		String sql = "SELECT j.id_jugador, j.nombre, j.vida, j.ataque, j.defensa, a.curso " + "FROM Jugador j "
@@ -445,6 +549,13 @@ public class Juego {
 		return alumnos;
 	}
 
+	/**
+	 * Carga todos los padres desde la base de datos y los devuelve como una lista.
+	 *
+	 * @param connection La conexión a la base de datos.
+	 * @return Una lista de objetos Padre cargados desde la base de datos.
+	 * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+	 */
 	private static ArrayList<Padre> cargarPadres(Connection connection) throws SQLException {
 		ArrayList<Padre> padres = new ArrayList<>();
 		String sql = "SELECT j.id_jugador, j.nombre, j.vida, j.ataque, j.defensa, pa.sexo " + "FROM Jugador j "
@@ -464,6 +575,11 @@ public class Juego {
 		return padres;
 	}
 
+	/**
+	 * Imprime los detalles de los jugadores disponibles en la lista proporcionada.
+	 *
+	 * @param jugadoresDisponibles La lista de jugadores disponibles.
+	 */
 	public static void imprimirListas(ArrayList<Jugador> jugadoresDisponibles) {
 		System.out.println("Personajes disponibles:");
 		for (Jugador jugador : jugadoresDisponibles) {
@@ -472,6 +588,10 @@ public class Juego {
 		}
 	}
 
+	/**
+	 * Imprime los detalles de todos los alumnos almacenados en la base de datos.
+	 * Se conecta a la base de datos, carga la lista de alumnos y luego imprime los detalles de cada uno.
+	 */
 	public static void imprimirAlumnos() {
 		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
 			ArrayList<Alumno> alumnos = cargarAlumnos(connection);
@@ -486,6 +606,10 @@ public class Juego {
 		}
 	}
 
+	/**
+	 * Imprime los detalles de todos los padres almacenados en la base de datos.
+	 * Se conecta a la base de datos, carga la lista de padres y luego imprime los detalles de cada uno.
+	 */
 	public static void imprimirPadres() {
 		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
 			ArrayList<Padre> padres = cargarPadres(connection);
@@ -500,6 +624,10 @@ public class Juego {
 		}
 	}
 
+	/**
+	 * Imprime los detalles de todos los profesores almacenados en la base de datos.
+	 * Se conecta a la base de datos, carga la lista de profesores y luego imprime los detalles de cada uno.
+	 */
 	public static void imprimirProfesores() {
 		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
 			ArrayList<Profesor> profesores = cargarProfesores(connection);
@@ -514,6 +642,13 @@ public class Juego {
 		}
 	}
 
+	/**
+	 * Crea y devuelve un jugador aleatorio con el nombre proporcionado.
+	 * Genera valores aleatorios para el ID, vida, ataque y defensa del jugador.
+	 *
+	 * @param nombre El nombre del jugador.
+	 * @return Un objeto de tipo Jugador creado aleatoriamente.
+	 */
 	public static Jugador agregarJugadorAleatorio(String nombre) {
 		int idAleatoria = generarNumeroAleatorio(0, 110);
 		int vidaAleatoria = generarNumeroAleatorio(80, 120);
@@ -523,11 +658,24 @@ public class Juego {
 		return new Alumno(idAleatoria, nombre, vidaAleatoria, atqAleatoria, defAleatoria, "1 DAM");
 	}
 
+	/**
+	 * Genera un número entero aleatorio dentro del rango especificado.
+	 *
+	 * @param min El valor mínimo del rango (incluido).
+	 * @param max El valor máximo del rango (incluido).
+	 * @return Un número aleatorio dentro del rango especificado.
+	 */
 	public static int generarNumeroAleatorio(int min, int max) {
 		Random random = new Random();
 		return random.nextInt(max - min + 1) + min;
 	}
 
+	/**
+	 * Simula un combate por turnos entre dos jugadores, mostrando el progreso de la batalla en la consola.
+	 *
+	 * @param jugador1 El primer jugador que participa en el combate.
+	 * @param jugador2 El segundo jugador que participa en el combate.
+	 */
 	public static void jugarCombate(Jugador jugador1, Jugador jugador2) {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
@@ -561,6 +709,12 @@ public class Juego {
 		}
 	}
 
+	/**
+	 * Muestra una representación visual de la vida del jugador en forma de una barra de vida en la consola.
+	 * La barra de vida muestra el porcentaje de vida actual del jugador.
+	 *
+	 * @param jugador El jugador del que se mostrará la barra de vida.
+	 */
 	public static void mostrarBarraVida(Jugador jugador) {
 		int vidaActual = jugador.getVida();
 		int vidaTotal = 100;
@@ -573,6 +727,10 @@ public class Juego {
 		System.out.println(" " + porcentajeVida + "%");
 	}
 
+	/**
+	 * Simula el camino de decisión del jugador cuando elige la opción de seguir corrigiendo exámenes.
+	 * Imprime mensajes que describen la situación y comienza un combate con un profesor enfadado.
+	 */
 	public static void caminoIzquierdaPr() {
 		System.out.println("Has decidido hacerte el loco y seguir corriguiendo exámenes.");
 		System.out.println("Parece que entra un profesor enfadado contigo por poner la fecha del examen el mismo dia...");
@@ -581,6 +739,10 @@ public class Juego {
 		System.out.println("COMIENZA EL COMBATE");
 	}
 
+	/**
+	 * Simula el camino de decisión del jugador cuando elige la opción de resolver una duda.
+	 * Imprime mensajes que describen la situación y comienza un combate con un alumno con dudas.
+	 */
 	public static void caminoDerechaPr() {
 		System.out.println("Has decidido resolver la duda y todo sale genial, ya no tiene dudas.");
 		System.out.println("Sin darte cuenta se te ha ido la hora del café y tienes otro alumno delante tuya con dudas...");
@@ -589,6 +751,10 @@ public class Juego {
 		System.out.println("COMIENZA EL COMBATE");
 	}
 
+	/**
+	 * Simula el camino de decisión del jugador cuando elige la opción de salir corriendo.
+	 * Imprime mensajes que describen la situación y comienza un combate con un profesor que acaba de adquirir su café.
+	 */
 	public static void caminoIzquierdaAl() {
 		System.out.println("Has decidido salir por patas y hacerte el loco.");
 		System.out.println("Corriendo sin darte cuenta te chocas con un profesor que justo acababa de adquirir su café...");
@@ -597,12 +763,16 @@ public class Juego {
 		System.out.println("COMIENZA EL COMBATE");
 	}
 
+	/**
+	 * Simula el camino de decisión del jugador cuando elige la opción de asumir el parte.
+	 * Imprime mensajes que describen la situación y comienza un combate con su padre, quien se entera de la situación y se enfada.
+	 */
 	public static void caminoDerechaAl() {
 		System.out.println("Has decidido asumir el parte, ya que te ha visto.");
 		System.out.println("Aparentemente no iba a pasar nada, hasta que tu padre se entera de que perderás la beca 6000 por hacer el gilipollas...");
 		System.out.println("..");
 		System.out.println(".");
 		System.out.println("COMIENZA EL COMBATE");
-	}
+	} 
 
 }

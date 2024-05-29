@@ -17,6 +17,11 @@ public class JugadorDAO {
 
 	private final Scanner sc = new Scanner(System.in);
 
+	/**
+	 * Establece una conexión a la base de datos utilizando JDBC.
+	 * 
+	 * @return La conexión establecida o null si no se pudo conectar.
+	 */
 	private Connection conectar() {
 		Connection con = null;
 		String url = "jdbc:mysql://" + MAQUINA + "/" + BD;
@@ -28,6 +33,16 @@ public class JugadorDAO {
 		return con;
 	}
 
+	/**
+	 * Agrega un nuevo jugador a la base de datos y selecciona su rol.
+	 * 
+	 * Se solicita al usuario que ingrese el nombre, la vida, el ataque y la defensa del jugador.
+	 * Luego se inserta esta información en la base de datos y se solicita al usuario que seleccione el rol del jugador:
+	 *   - Alumno
+	 *   - Profesor
+	 *   - Padre
+	 * Dependiendo del rol seleccionado, se crea un nuevo registro en la tabla correspondiente.
+	 */
 	public void agregarJugador() {
 		conexion = conectar();
 		long generatedId = 0;
@@ -93,6 +108,12 @@ public class JugadorDAO {
 		}
 	}
 
+	/**
+	 * Crea un nuevo registro de alumno en la base de datos con el ID del jugador generado.
+	 * 
+	 * @param generatedId El ID generado del jugador
+	 * @throws SQLException Si ocurre un error al interactuar con la base de datos
+	 */
 	private void crearAlumno(long generatedId) throws SQLException {
 		System.out.println("Diga el curso del Alumno");
 		String curso = sc.nextLine();
@@ -106,6 +127,12 @@ public class JugadorDAO {
 		}
 	}
 
+	/**
+	 * Crea un nuevo registro de profesor en la base de datos con el ID del jugador generado.
+	 * 
+	 * @param generatedId El ID generado del jugador
+	 * @throws SQLException Si ocurre un error al interactuar con la base de datos
+	 */
 	private void crearProfesor(long generatedId) throws SQLException {
 		System.out.println("Diga la asignatura del Profesor");
 		String asig = sc.nextLine();
@@ -119,6 +146,12 @@ public class JugadorDAO {
 		}
 	}
 
+	/**
+	 * Crea un nuevo registro de padre en la base de datos con el ID del jugador generado.
+	 * 
+	 * @param generatedId El ID generado del jugador
+	 * @throws SQLException Si ocurre un error al interactuar con la base de datos
+	 */
 	private void crearPadre(long generatedId) throws SQLException {
 		System.out.println("Diga el sexo del Padre");
 		String sexo = sc.nextLine();
@@ -132,6 +165,11 @@ public class JugadorDAO {
 		}
 	}
 
+	/**
+	 * Modifica los datos de un jugador en la base de datos.
+	 * 
+	 * @throws SQLException Si ocurre un error al interactuar con la base de datos
+	 */
 	public void modificarJugador() {
 		conexion = conectar();
 
@@ -166,27 +204,6 @@ public class JugadorDAO {
 				return;
 			}
 
-			System.out.println("Diga el rol que desea modificar");
-			System.out.println("1. Alumno");
-			System.out.println("2. Profesor");
-			System.out.println("3. Padre");
-			int rolJugador = sc.nextInt();
-			sc.nextLine();
-
-			switch (rolJugador) {
-			case 1:
-				modificarAlumno(idJugador);
-				break;
-			case 2:
-				modificarProfesor(idJugador);
-				break;
-			case 3:
-				modificarPadre(idJugador);
-				break;
-			default:
-				System.out.println("Opción inválida.");
-				break;
-			}
 		} catch (SQLException e) {
 			System.out.println("Error al ejecutar la consulta: " + e.getMessage());
 		} finally {
@@ -199,46 +216,11 @@ public class JugadorDAO {
 			}
 		}
 	}
-
-	private void modificarAlumno(long idJugador) throws SQLException {
-		System.out.println("Diga el nuevo curso del Alumno");
-		String curso = sc.nextLine();
-		System.out.println("Modificado correctamente");
-
-		String query = "UPDATE Alumno SET curso = ? WHERE id_jugador = ?";
-		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-			pstmt.setString(1, curso);
-			pstmt.setLong(2, idJugador);
-			pstmt.executeUpdate();
-		}
-	}
-
-	private void modificarProfesor(long idJugador) throws SQLException {
-		System.out.println("Diga la nueva asignatura del Profesor");
-		String asig = sc.nextLine();
-		System.out.println("Modificado correctamente");
-
-		String query = "UPDATE Profesor SET asignatura = ? WHERE id_jugador = ?";
-		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-			pstmt.setString(1, asig);
-			pstmt.setLong(2, idJugador);
-			pstmt.executeUpdate();
-		}
-	}
-
-	private void modificarPadre(long idJugador) throws SQLException {
-		System.out.println("Diga el nuevo sexo del Padre");
-		String sexo = sc.nextLine();
-		System.out.println("Modificado correctamente");
-
-		String query = "UPDATE Padre SET sexo = ? WHERE id_jugador = ?";
-		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-			pstmt.setString(1, sexo);
-			pstmt.setLong(2, idJugador);
-			pstmt.executeUpdate();
-		}
-	}
-
+	/**
+	 * Elimina un jugador de la base de datos junto con sus registros asociados en las tablas de roles (Alumno, Profesor, Padre).
+	 * 
+	 * @throws SQLException Si ocurre un error al interactuar con la base de datos
+	 */
 	public void eliminarJugador() {
 		conexion = conectar();
 
@@ -291,6 +273,13 @@ public class JugadorDAO {
 		}
 	}
 
+	/**
+	 * Elimina un registro específico de una tabla en la base de datos.
+	 * 
+	 * @param idJugador El ID del jugador cuyo registro se eliminará
+	 * @param query La consulta SQL para eliminar el registro específico
+	 * @throws SQLException Si ocurre un error al interactuar con la base de datos
+	 */
 	private void eliminarRegistroEspecifico(long idJugador, String query) throws SQLException {
 		try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
 			pstmt.setLong(1, idJugador);
